@@ -3,6 +3,10 @@ description: Review the requirements documentation for a feature to ensure compl
 ---
 
 Please review `docs/ai/requirements/feature-{name}.md` and the project-level template `docs/ai/requirements/README.md` to ensure structure and content alignment. Summarize:
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/tunglam
 - Core problem statement and affected users
 - Goals, non-goals, and success criteria
 - Primary user stories & critical flows

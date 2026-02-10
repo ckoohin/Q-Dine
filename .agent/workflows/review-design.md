@@ -3,6 +3,10 @@ description: Review the design documentation for a feature to ensure completenes
 ---
 
 Review the design documentation in docs/ai/design/feature-{name}.md (and the project-level README if relevant). Summarize:
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/tunglam
 - Architecture overview (ensure mermaid diagram is present and accurate)
 - Key components and their responsibilities
 - Technology choices and rationale
