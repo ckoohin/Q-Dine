@@ -1,4 +1,6 @@
 .agent/
-.cursor/
-.ai-devkit.json
+.env
 .github/
+node_modules/
+.ai-devkit/
+.ai-devkit.json
