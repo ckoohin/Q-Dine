@@ -1,4 +1,4 @@
-import { cn } from "@/libs/utils"; // nếu bạn dùng shadcn utils
+import { cn } from "@/libs/utils";
 import type { ReactNode } from "react";
 
 type ContainerProps = {
@@ -10,6 +10,7 @@ type ContainerProps = {
     overlay?: boolean;
     classNameUrlImg?: string
 } & React.HTMLAttributes<HTMLDivElement>;
+
 export default function Container({
     children,
     className,

@@ -28,7 +28,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
           rel="stylesheet" />
       </head>
-      <body className={inter.className}>
+      <body className={cn(inter.className, "bg-background font-display text-text-main antialiased selection:bg-savory-green selection:text-white")}>
         <Providers>
           {children}
         </Providers>
