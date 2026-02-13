@@ -17,7 +17,11 @@ Tăng trải nghiệm người dùng và tối ưu quy trình nhà hàng
 
 2. Đối tượng sử dụng (Actors)
 Actor	            Mô tả
+<<<<<<< HEAD
 Khách hàng	        Quét QR, xem menu, đặt món, chọn buffet
+=======
+Khách hàng	        Quét QR, xem menu, đặt món, chọn buffety
+>>>>>>> origin/tunglam
 Nhân viên	        Tạo QR cho bàn, quản lý trạng thái bàn
 Quản lý/Admin	    Quản lý menu, bàn, đơn hàng, báo cáo
 3. Tech Stack
