@@ -8,11 +8,25 @@ import {
   Settings,
 } from "lucide-react";
 
-export const sidebarSections = [
+type SidebarSection = {
+    title: string;
+    items: {
+        label: string;
+        href: string;
+        icon: any;
+    }[];
+};
+
+export const sidebarSections: SidebarSection[] = [
+  {
+    title: "Tổng quan",
+    items: [
+      { label: "Tổng quan", href: "/admin/dashboard", icon: LayoutDashboard },
+    ],
+  },
   {
     title: "Quản lý",
     items: [
-      { label: "Tổng quan", href: "/admin/dashboard", icon: LayoutDashboard },
       { label: "Thực đơn", href: "/admin/menu", icon: Utensils },
       { label: "Sơ đồ bàn", href: "/admin/tables", icon: Table },
       { label: "Nhân viên", href: "/admin/staff", icon: Users },
@@ -21,8 +35,13 @@ export const sidebarSections = [
   {
     title: "Vận hành",
     items: [
-      { label: "Báo cáo", href: "/admin/reports", icon: BarChart3 },
-      { label: "Lịch sử đơn", href: "/admin/orders", icon: ReceiptText },
+        { label: "Lịch sử đơn", href: "/admin/orders", icon: ReceiptText },
+        { label: "Báo cáo", href: "/admin/reports", icon: BarChart3 },
+    ],
+  },
+  {
+    title: "system",
+    items: [
       { label: "Cài đặt", href: "/admin/settings", icon: Settings },
     ],
   },

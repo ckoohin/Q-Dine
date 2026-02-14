@@ -1,11 +1,19 @@
 import React from 'react'
-
+import {
+  LayoutDashboard,
+  Utensils,
+  Table,
+  Users,
+  BarChart3,
+  ReceiptText,
+  Settings,
+} from "lucide-react";
+import HeaderBreadcrumb from './HeaderBreadcrumb';
 const Header = () => {
     return (
         <>
             <header className="h-20 flex items-center justify-between px-8 bg-transparent shrink-0">
-                <div className="flex items-center gap-2">
-                </div>
+                <HeaderBreadcrumb/>
                 <div className="flex items-center gap-6">
                     <div className="relative group">
                         <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 group-focus-within:text-savory-green transition-colors">
