@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
 
 export class registerInputDto {
   @IsString()
@@ -12,10 +12,12 @@ export class registerInputDto {
   fullName: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
-  @MaxLength(50, { message: 'Mật khẩu không dài quá 50 ký tự' })
-  @MinLength(6, { message: 'Mật khẩu tối thiểu 6 ký tự' })
-  password: string;
+  @IsNotEmpty({ message: 'Password không được để trống' })
+  @MinLength(6, { message: 'Password phải có ít nhất 6 ký tự' })
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{6,}$/, {
+    message: 'Password phải chứa ít nhất một chữ hoa, một chữ thường và một số',
+  })
+  password!: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Nhập lại mật khẩu không được để trống' })

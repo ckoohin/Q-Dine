@@ -2,7 +2,6 @@ import {
   Injectable,
   ConflictException,
   NotFoundException,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -10,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { asyncHandleOperation } from 'src/common/utils/async-handle.utils';
 
 @Injectable()
 export class UsersService {
@@ -19,16 +19,16 @@ export class UsersService {
   ) {}
 
   async create(dto: CreateUserDto): Promise<Omit<User, 'password'>> {
-    // Kiểm tra username đã tồn tại chưa
-    const existingUser = await this.userRepository.findOne({
-      where: { username: dto.username },
-    });
+    return asyncHandleOperation(async () => {
+      // Kiểm tra username đã tồn tại chưa
+      const existingUser = await this.userRepository.findOne({
+        where: { username: dto.username },
+      });
 
-    if (existingUser) {
-      throw new ConflictException('Username đã tồn tại');
-    }
+      if (existingUser) {
+        throw new ConflictException('Username đã tồn tại');
+      }
 
-    try {
       // Hash password
       const hashedPassword = await bcrypt.hash(dto.password, 10);
 
@@ -43,64 +43,80 @@ export class UsersService {
       // Loại bỏ password khỏi response
       const { password: _password, ...result } = savedUser;
       return result;
-    } catch {
-      throw new InternalServerErrorException('Lỗi khi tạo user');
-    }
+    }, 'Lỗi khi tạo người dùng');
   }
 
   async findAll(): Promise<Omit<User, 'password'>[]> {
-    const users = await this.userRepository.find();
-    return users.map(({ password, ...user }) => user);
+    return asyncHandleOperation(async () => {
+      const users = await this.userRepository.find();
+      return users.map(({ password, ...user }) => user);
+    }, 'Lỗi khi lấy Users');
   }
 
   async findOne(id: number): Promise<Omit<User, 'password'>> {
-    const user = await this.userRepository.findOneBy({ id });
-    if (!user) {
-      throw new NotFoundException(`Không tìm thấy user với id ${id}`);
-    }
-    const { password, ...result } = user;
-    return result;
+    return asyncHandleOperation(async () => {
+      const user = await this.userRepository.findOneBy({ id });
+      if (!user) {
+        throw new NotFoundException(`Không tìm thấy user với id ${id}`);
+      }
+      const { password, ...result } = user;
+      return result;
+    }, 'Lỗi khi lấy một người dùng');
   }
 
   async findByUsername(username: string): Promise<User | null> {
-    return this.userRepository
-      .createQueryBuilder('user')
-      .where('user.username = :username', { username })
-      .addSelect('user.password')
-      .getOne();
+    return asyncHandleOperation(() => {
+      return this.userRepository
+        .createQueryBuilder('user')
+        .where('user.username = :username', { username })
+        .addSelect('user.password')
+        .getOne();
+    }, 'Lỗi khi tìm người dùng theo tên đăng nhập');
   }
 
   async update(
     id: number,
     updateUserDto: UpdateUserDto,
   ): Promise<Omit<User, 'password'>> {
-    const user = await this.userRepository.findOneBy({ id });
-    if (!user) {
-      throw new NotFoundException(`Không tìm thấy user với id ${id}`);
-    }
+    return asyncHandleOperation(async () => {
+      const user = await this.userRepository.findOneBy({ id });
+      if (!user) {
+        throw new NotFoundException(`Không tìm thấy user với id ${id}`);
+      }
 
-    // Nếu cập nhật password, hash lại
-    if (updateUserDto.password) {
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
-    }
+      // Nếu cập nhật password, hash lại
+      if (updateUserDto.password) {
+        updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+      }
 
-    await this.userRepository.update(id, updateUserDto);
-    const updatedUser = await this.userRepository.findOneBy({ id });
-    if (!updatedUser) {
-      throw new NotFoundException(`Không tìm thấy user với id ${id}`);
-    }
-    const { password, ...result } = updatedUser;
-    return result;
+      await this.userRepository.update(id, updateUserDto);
+      const updatedUser = await this.userRepository.findOneBy({ id });
+      if (!updatedUser) {
+        throw new NotFoundException(`Không tìm thấy user với id ${id}`);
+      }
+      const { password, ...result } = updatedUser;
+      return result;
+    }, 'Lỗi khi cập nhật người dùng');
   }
 
   async updateLastLogin(id: number): Promise<void> {
-    await this.userRepository.update(id, { lastLogin: new Date() });
+    return asyncHandleOperation(async () => {
+      await this.userRepository.update(id, { lastLogin: new Date() });
+    }, 'Lỗi khi cập nhật thời gian đăng nhập');
   }
 
-  async remove(id: number): Promise<void> {
-    const result = await this.userRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Không tìm thấy user với id ${id}`);
-    }
+  async remove(id: number): Promise<Omit<User, 'password'>> {
+    return asyncHandleOperation(async () => {
+      const user = await this.userRepository.findOneBy({ id });
+
+      if (!user) {
+        throw new NotFoundException(`Không tìm thấy user với id ${id}`);
+      }
+
+      await this.userRepository.delete(id);
+
+      const { password, ...result } = user;
+      return result;
+    }, 'Lỗi khi xóa người dùng');
   }
 }

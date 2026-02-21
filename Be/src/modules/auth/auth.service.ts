@@ -3,6 +3,7 @@ import { loginDto, registerInputDto, responseUser } from './dto';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { asyncHandleOperation } from 'src/common/utils/async-handle.utils';
 
 @Injectable()
 export class AuthService {
@@ -11,50 +12,55 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
   async register(dto: registerInputDto): Promise<responseUser> {
-    const newUser = await this.usersService.create(dto);
-    return newUser;
+    return asyncHandleOperation(async () => {
+      const newUser = await this.usersService.create(dto);
+      return newUser;
+    }, 'Lỗi khi đăng ký');
   }
   async login(dto: loginDto) {
-    const user = await this.validateUser(dto.username, dto.password);
+    return asyncHandleOperation(async () => {
+      const user = await this.validateUser(dto.username, dto.password);
+      if (!user) {
+        throw new UnauthorizedException('Username hoặc password không đúng');
+      }
 
-    if (!user) {
-      throw new UnauthorizedException('Username hoặc password không đúng');
-    }
+      if (!user.isActive) {
+        throw new UnauthorizedException('Tài khoản đã bị vô hiệu hóa');
+      }
 
-    if (!user.isActive) {
-      throw new UnauthorizedException('Tài khoản đã bị vô hiệu hóa');
-    }
+      await this.usersService.updateLastLogin(user.id);
 
-    await this.usersService.updateLastLogin(user.id);
+      const token = this.jwtService.sign({
+        sub: user.id,
+        username: user.username,
+        role: user.role,
+      });
 
-    const token = this.jwtService.sign({
-      sub: user.id,
-      username: user.username,
-      role: user.role,
-    });
-
-    const { password, ...result } = user;
-    return {
-      token,
-      user: {
-        ...result,
-      },
-    };
+      const { password, ...result } = user;
+      return {
+        token,
+        user: {
+          ...result,
+        },
+      };
+    }, 'Lỗi khi đăng nhập');
   }
 
   async validateUser(username: string, password: string) {
-    const user = await this.usersService.findByUsername(username);
+    return asyncHandleOperation(async () => {
+      const user = await this.usersService.findByUsername(username);
 
-    if (!user) {
-      return null;
-    }
+      if (!user) {
+        return null;
+      }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid) {
-      return null;
-    }
+      if (!isPasswordValid) {
+        return null;
+      }
 
-    return user;
+      return user;
+    }, 'Lỗi khi xác thực người dùng');
   }
 }

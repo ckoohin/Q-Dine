@@ -5,7 +5,6 @@ import { getDatabaseConfig } from './config/database.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
-import { AuthAIModule } from './modules/auth_ai/auth.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
@@ -20,7 +19,6 @@ import { AuthModule } from './modules/auth/auth.module';
       inject: [ConfigService],
     }),
     UsersModule,
-    AuthAIModule,
     AuthModule,
   ],
   controllers: [AppController],
