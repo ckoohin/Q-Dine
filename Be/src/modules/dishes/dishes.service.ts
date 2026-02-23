@@ -22,19 +22,20 @@ export class DishesService {
     }, 'Lỗi khi tạo món ăn');
   }
 
-  async findAll(role: UserRole): Promise<Dish[]> {
+  async findAll(
+    role: UserRole,
+    status?: DishStatus,
+    deleted?: string,
+  ): Promise<Dish[]> {
     return asyncHandleOperation(async () => {
-      if (role === UserRole.ADMIN) {
-        // Admin thấy tất cả món (trừ đã xóa)
-        return await this.dishRepository.find({
-          where: { isDeleted: false },
-        });
-      }
+      const where = {
+        isDeleted: deleted === 'true' ? true : false,
+        status:
+          status ??
+          (role === UserRole.ADMIN ? undefined : DishStatus.AVAILABLE),
+      };
 
-      // Staff / Khách chỉ thấy món AVAILABLE
-      return await this.dishRepository.find({
-        where: { isDeleted: false, status: DishStatus.AVAILABLE },
-      });
+      return await this.dishRepository.find({ where });
     }, 'Lỗi khi lấy danh sách món ăn');
   }
 
