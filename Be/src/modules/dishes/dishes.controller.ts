@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { DishesService } from './dishes.service';
@@ -13,6 +14,7 @@ import { CreateDishDto } from './dto/create-dish.dto';
 import { UpdateDishDto } from './dto/update-dish.dto';
 import { User } from '../users/entities/user.entity';
 import { UserRole } from 'src/common/enums/user-role.enum';
+import { DishStatus } from 'src/common/enums/dish-status.enum';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -30,8 +32,12 @@ export class DishesController {
   }
 
   @Get()
-  findAll(@CurrentUser() user: User) {
-    return this.dishesService.findAll(user.role);
+  findAll(
+    @CurrentUser() user: User,
+    @Query('status') status?: DishStatus,
+    @Query('deleted') deleted?: string,
+  ) {
+    return this.dishesService.findAll(user.role, status, deleted);
   }
 
   @Get(':id')
