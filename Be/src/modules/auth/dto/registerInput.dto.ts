@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
 
-export class registerInputDto {
+export class RegisterInputDto {
   @IsString()
   @IsNotEmpty({ message: 'Tên đăng nhập không được bỏ trống' })
   @MinLength(3, { message: 'Tên đăng nhập chứa ít nhất chứa 3 ký tự' })

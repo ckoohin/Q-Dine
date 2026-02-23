@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
-export class loginDto {
+export class LoginDto {
   @IsString()
   @IsNotEmpty({ message: 'Tên đăng nhập không được bỏ trống' })
   @MinLength(3, { message: 'Tên đăng nhập chứa ít nhất chứa 3 ký tự' })
