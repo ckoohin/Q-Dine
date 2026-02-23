@@ -37,7 +37,7 @@ export class UsersController {
 
   @Get('me')
   getMe(@CurrentUser() user: User) {
-    return this.usersService.findOne(user.id);
+    return user;
   }
 
   @Get(':id')

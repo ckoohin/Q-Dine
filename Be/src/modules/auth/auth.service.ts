@@ -1,5 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { loginDto, registerInputDto, responseUser } from './dto';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { RegisterInputDto, LoginDto, ResponseUserDto } from './dto';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -11,13 +15,18 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
-  async register(dto: registerInputDto): Promise<responseUser> {
+  async register(dto: RegisterInputDto): Promise<ResponseUserDto> {
     return asyncHandleOperation(async () => {
-      const newUser = await this.usersService.create(dto);
+      if (dto.password !== dto.repassword) {
+        throw new BadRequestException('Mật khẩu xác nhận không khớp');
+      }
+
+      const { repassword, ...userData } = dto;
+      const newUser = await this.usersService.create(userData);
       return newUser;
     }, 'Lỗi khi đăng ký');
   }
-  async login(dto: loginDto) {
+  async login(dto: LoginDto) {
     return asyncHandleOperation(async () => {
       const user = await this.validateUser(dto.username, dto.password);
       if (!user) {
