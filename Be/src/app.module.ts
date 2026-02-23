@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DishesModule } from './modules/dishes/dishes.module';
+import { TablesModule } from './modules/tables/tables.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { DishesModule } from './modules/dishes/dishes.module';
     UsersModule,
     AuthModule,
     DishesModule,
+    TablesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
