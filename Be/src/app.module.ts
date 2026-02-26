@@ -8,6 +8,11 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DishesModule } from './modules/dishes/dishes.module';
 import { TablesModule } from './modules/tables/tables.module';
+import { QrTablesModule } from './modules/qr-tables/qr-tables.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { FloorsModule } from './modules/floors/floors.module';
+import { AreasModule } from './modules/areas/areas.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -24,6 +29,11 @@ import { TablesModule } from './modules/tables/tables.module';
     AuthModule,
     DishesModule,
     TablesModule,
+    QrTablesModule,
+    OrdersModule,
+    FloorsModule,
+    AreasModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

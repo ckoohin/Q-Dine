@@ -4,15 +4,22 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
-
+@Unique(['number', 'floorId'])
 @Entity('Tables')
 export class Table {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ length: 50, unique: true })
+  @Column({ default: '1' })
+  floorId: string;
+
+  @Column({ nullable: true })
+  areaId: string;
+
+  @Column({ length: 50 })
   number: string;
 
   @Column({ type: 'int' })

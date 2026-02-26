@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Category } from '../../categories/entities/category.entity';
 
 @Entity('Dishes')
 export class Dish {
@@ -30,6 +33,10 @@ export class Dish {
 
   @Column({ type: 'uuid', nullable: true })
   categoryId: string;
+
+  @ManyToOne(() => Category, (category) => category.dishes)
+  @JoinColumn({ name: 'categoryId' })
+  category: Category;
 
   @Column({ length: 255, nullable: true })
   imageUrl: string;
