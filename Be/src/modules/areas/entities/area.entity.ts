@@ -27,9 +27,6 @@ export class Area {
   @Column({ type: 'int', default: 50 })
   maxTables: number;
 
-  @Column({ type: 'int', default: 200 })
-  maxCapacity: number;
-
   @Column({ type: 'boolean', default: false })
   isDeleted: boolean;
 
