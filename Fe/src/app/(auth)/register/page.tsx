@@ -1,14 +1,5 @@
-import Container from '@/components/Container'
-import React from 'react'
+import AuthScreen from "@/app/(auth)/_components/AuthScreen";
 
-const Register = () => {
-    return (
-        <>
-            <Container>
-                <div>Register</div>
-            </Container>
-        </>
-    )
+export default function Page() {
+  return <AuthScreen mode="register" />;
 }
-
-export default Register
