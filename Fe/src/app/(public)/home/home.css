@@ -1,0 +1,19 @@
+/* Chỉ ăn trong trang Home */
+.savory-scope {
+    /* tokens riêng cho Home */
+    --primary: #4caf50;
+    --bg-light: #f8faf8;
+    --bg-dark: #141e14;
+
+    font-family: var(--font-display, Inter, sans-serif);
+}
+
+/* nếu bạn dùng class qr-glow trong HTML */
+.savory-scope .qr-glow {
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.4);
+}
+
+/* Material Symbols */
+.savory-scope .material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
