@@ -10,6 +10,7 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { asyncHandleOperation } from 'src/common/utils/async-handle.utils';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -18,11 +19,10 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(dto: CreateUserDto): Promise<Omit<User, 'password'>> {
+  async create(dto: CreateUserDto): Promise<UserResponseDto> {
     return asyncHandleOperation(async () => {
-      // Kiểm tra username đã tồn tại chưa
       const existingUser = await this.userRepository.findOne({
-        where: { username: dto.username },
+        where: { email: dto.email },
       });
 
       if (existingUser) {
@@ -32,7 +32,6 @@ export class UsersService {
       // Hash password
       const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-      // Tạo user mới
       const user = this.userRepository.create({
         ...dto,
         password: hashedPassword,
@@ -46,14 +45,14 @@ export class UsersService {
     }, 'Lỗi khi tạo người dùng');
   }
 
-  async findAll(): Promise<Omit<User, 'password'>[]> {
+  async findAll(): Promise<UserResponseDto[]> {
     return asyncHandleOperation(async () => {
       const users = await this.userRepository.find();
       return users.map(({ password, ...user }) => user);
     }, 'Lỗi khi lấy Users');
   }
 
-  async findOne(id: number): Promise<Omit<User, 'password'>> {
+  async findOne(id: string): Promise<UserResponseDto> {
     return asyncHandleOperation(async () => {
       const user = await this.userRepository.findOneBy({ id });
       if (!user) {
@@ -75,9 +74,9 @@ export class UsersService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateUserDto: UpdateUserDto,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<UserResponseDto> {
     return asyncHandleOperation(async () => {
       const user = await this.userRepository.findOneBy({ id });
       if (!user) {
@@ -99,13 +98,13 @@ export class UsersService {
     }, 'Lỗi khi cập nhật người dùng');
   }
 
-  async updateLastLogin(id: number): Promise<void> {
+  async updateLastLogin(id: string): Promise<void> {
     return asyncHandleOperation(async () => {
       await this.userRepository.update(id, { lastLogin: new Date() });
     }, 'Lỗi khi cập nhật thời gian đăng nhập');
   }
 
-  async remove(id: number): Promise<Omit<User, 'password'>> {
+  async remove(id: string): Promise<UserResponseDto> {
     return asyncHandleOperation(async () => {
       const user = await this.userRepository.findOneBy({ id });
 

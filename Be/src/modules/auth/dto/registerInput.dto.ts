@@ -1,25 +1,34 @@
-import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  MaxLength,
+  IsNotEmpty,
+  Matches,
+} from 'class-validator';
+import { Transform } from 'class-transformer';
 
-export class RegisterInputDto {
-  @IsString()
-  @IsNotEmpty({ message: 'Tên đăng nhập không được bỏ trống' })
-  @MinLength(3, { message: 'Tên đăng nhập chứa ít nhất chứa 3 ký tự' })
-  username: string;
+export class RegisterDto {
+  @IsEmail({}, { message: 'Email không hợp lệ' })
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.toLowerCase().trim() : value,
+  )
+  email: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'Tên không được bỏ trống' })
-  @MinLength(2, { message: 'Tên ít nhất chứa 2 ký tự' })
-  fullName: string;
-
-  @IsString()
-  @IsNotEmpty({ message: 'Password không được để trống' })
-  @MinLength(6, { message: 'Password phải có ít nhất 6 ký tự' })
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{6,}$/, {
-    message: 'Password phải chứa ít nhất một chữ hoa, một chữ thường và một số',
+  @MinLength(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' })
+  @MaxLength(32, { message: 'Mật khẩu không được vượt quá 32 ký tự' })
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/, {
+    message:
+      'Mật khẩu phải có ít nhất 1 chữ thường, 1 chữ hoa, 1 số và 1 ký tự đặc biệt',
   })
-  password!: string;
+  password: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'Nhập lại mật khẩu không được để trống' })
-  repassword: string;
+  @IsNotEmpty({ message: 'Họ và tên không được để trống' })
+  @MaxLength(100)
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.toLowerCase().trim() : value,
+  )
+  fullName: string;
 }

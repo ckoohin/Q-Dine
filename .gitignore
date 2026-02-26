@@ -1,8 +1,7 @@
-.agent
+.agent/
 .env
+.cursor/
 .github/
 node_modules/
 .ai-devkit/
 .ai-devkit.json
-.vscode
-.cursor

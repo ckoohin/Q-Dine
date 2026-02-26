@@ -1,19 +1,22 @@
 import { UserRole } from 'src/common/enums/user-role.enum';
 import {
-  Column,
-  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
-@Entity('Users')
+@Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ unique: true, length: 50 })
-  username: string;
+  @Column({ unique: true })
+  email: string;
 
   @Column({ select: false })
   password: string;
@@ -28,6 +31,9 @@ export class User {
   })
   role: UserRole;
 
+  @Column({ nullable: true, type: 'text' })
+  refreshToken: string | null;
+
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
 
@@ -39,4 +45,16 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, 12);
+    }
+  }
+
+  async comparePassword(plainText: string): Promise<boolean> {
+    return bcrypt.compare(plainText, this.password);
+  }
 }

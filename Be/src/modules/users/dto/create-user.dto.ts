@@ -11,10 +11,8 @@ import { UserRole } from 'src/common/enums/user-role.enum';
 
 export class CreateUserDto {
   @IsString()
-  @IsNotEmpty({ message: 'Username không được để trống' })
-  @MinLength(3, { message: 'Username phải có ít nhất 3 ký tự' })
-  @MaxLength(50, { message: 'Username không được vượt quá 50 ký tự' })
-  username!: string;
+  @IsNotEmpty({ message: 'Email không được để trống' })
+  email!: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Password không được để trống' })
