@@ -4,7 +4,7 @@ import Providers from '@/app/providers';
 import { cn } from '@/libs/utils';
 import Sidebar from '@/components/layouts/admin/sideber/Sidebar';
 import Footer from '@/components/layouts/admin/Footer';
-import Header from '@/components/layouts/admin/Header';
+import Header from '@/components/layouts/admin/header/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 

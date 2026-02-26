@@ -7,14 +7,14 @@ import LogoAdmin from "@/components/logo/LogoAdmin";
 
 export default function Sidebar() {
     return (
-        <aside className="w-72 pt-8 pb-6 px-4 flex-shrink-0 flex flex-col bg-aside border-r border-slate-200/50">
+        <aside className="w-62 pt-8 pb-6 px-4 flex-shrink-0 flex flex-col bg-aside border-r border-slate-200/50">
             {/* Logo */}
             <LogoAdmin />
             
             {/* Menu */}
-            <nav className="flex-1 mt-6 space-y-8 overflow-y-auto">
+            <nav className="flex-1 mt-6 space-y-8 overflow-y-auto scrollbar-hide">
                 {sidebarSections.map((section) => (
-                    <div key={section.title}>
+                    <div key={section.title} >
                         <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">
                             {section.title}
                         </p>

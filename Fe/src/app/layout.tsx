@@ -21,12 +21,13 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>Tổng quan Quản trị Savory - Biến thể 2</title>
+        <title>Tổng quan Quản trị Savory</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
           rel="stylesheet" />
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
           rel="stylesheet" />
+        <link rel="stylesheet" href="/logo.png" />
       </head>
       <body className={cn(inter.className, "bg-background font-display text-text-main antialiased selection:bg-savory-green selection:text-white")}>
         <Providers>
