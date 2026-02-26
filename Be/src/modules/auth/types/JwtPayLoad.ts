@@ -1,5 +1,11 @@
 export interface JwtPayload {
-  sub: number;
-  username: string;
+  sub: string;
+  email: string;
   role: string;
+  iat?: number;
+  exp?: number;
+}
+
+export interface JwtRefreshPayload extends JwtPayload {
+  refreshToken?: string;
 }

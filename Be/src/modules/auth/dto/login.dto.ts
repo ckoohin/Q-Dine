@@ -1,14 +1,23 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  MaxLength,
+  IsNotEmpty,
+} from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class LoginDto {
   @IsString()
-  @IsNotEmpty({ message: 'Tên đăng nhập không được bỏ trống' })
-  @MinLength(3, { message: 'Tên đăng nhập chứa ít nhất chứa 3 ký tự' })
-  username: string;
+  @IsEmail({}, { message: 'Email không hợp lệ' })
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.toLowerCase().trim() : value,
+  )
+  email: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
-  @MaxLength(50, { message: 'Mật khẩu không dài quá 50 ký tự' })
-  @MinLength(6, { message: 'Mật khẩu tối thiểu 6 ký tự' })
+  @MaxLength(32, { message: 'Mật khẩu không dài quá 32 ký tự' })
+  @MinLength(8, { message: 'Mật khẩu tối thiểu 8 ký tự' })
   password: string;
 }
