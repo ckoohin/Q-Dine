@@ -8,16 +8,18 @@ type ContainerProps = {
     url_img?: string;
     classOverlay?: string;
     overlay?: boolean;
-    classNameUrlImg?: string
+    classNameUrlImg?: string;
+    classNameContent?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export default function Container({
     children,
     className,
-    url_img,
     classOverlay,
-    overlay = false,
     classNameUrlImg,
+    classNameContent,
+    url_img,
+    overlay = false,
     ...props
 }: ContainerProps) {
     return (
@@ -50,7 +52,10 @@ export default function Container({
                 )}></div>
             )}
 
-            <div className="flex relative h-full z-10 max-w-[1680px] w-full mx-auto flex-col px-4">
+            <div className={cn(
+                "flex relative h-full z-10 max-w-[1680px] w-full mx-auto flex-col px-4",
+                classNameContent
+            )}>
                 {children}
             </div>
         </div>
