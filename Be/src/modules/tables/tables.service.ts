@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -10,23 +11,52 @@ import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
 import { TableStatus } from 'src/common/enums/table-status.enum';
 import { asyncHandleOperation } from 'src/common/utils/async-handle.utils';
+import { Area } from '../areas/entities/area.entity';
+import { Floor } from '../floors/entities/floor.entity';
 
 @Injectable()
 export class TablesService {
   constructor(
     @InjectRepository(Table)
     private readonly tableRepository: Repository<Table>,
+    @InjectRepository(Area)
+    private readonly areaRepository: Repository<Area>,
+    @InjectRepository(Floor)
+    private readonly floorRepository: Repository<Floor>,
   ) {}
 
   async create(dto: CreateTableDto): Promise<Table> {
     return asyncHandleOperation(async () => {
+      const floor = await this.floorRepository.findOne({
+        where: { id: dto.floorId, isDeleted: false },
+      });
+
+      if (!floor) throw new NotFoundException(`Tầng này không tồn tại`);
+
+      if (dto.areaId) {
+        const area = await this.areaRepository.findOne({
+          where: { id: dto.areaId, isDeleted: false },
+        });
+
+        if (!area) throw new NotFoundException('Khu vực này không tồn tại');
+
+        if (+area.floorId !== +dto.floorId)
+          throw new BadRequestException('Khu vực không thuộc tầng đã chọn');
+      }
+
       // Kiểm tra số bàn đã tồn tại chưa
       const existing = await this.tableRepository.findOne({
-        where: { number: dto.number, isDeleted: false },
+        where: {
+          number: dto.number,
+          floorId: dto.floorId,
+          isDeleted: false,
+        },
       });
 
       if (existing) {
-        throw new ConflictException(`Bàn số ${dto.number} đã tồn tại`);
+        throw new ConflictException(
+          `Bàn số ${dto.number} Ở ${floor.name} đã tồn tại`,
+        );
       }
 
       const table = this.tableRepository.create(dto);
@@ -70,6 +100,24 @@ export class TablesService {
         where: { id, isDeleted: false },
       });
 
+      if (dto.floorId) {
+        const floor = await this.floorRepository.findOne({
+          where: { id: dto.floorId, isDeleted: false },
+        });
+        if (!floor) throw new NotFoundException('Tầng này không tồn tại');
+      }
+
+      if (dto.areaId) {
+        const area = await this.areaRepository.findOne({
+          where: { id: dto.areaId, isDeleted: false },
+        });
+        if (!area) throw new NotFoundException('Khu vực này không tồn tại');
+
+        const floorId = dto.floorId ?? table?.floorId;
+        if (+area.floorId !== +floorId!)
+          throw new BadRequestException('Khu vực không thuộc tầng đã chọn');
+      }
+
       if (!table) {
         throw new NotFoundException(`Không tìm thấy bàn với id ${id}`);
       }
@@ -77,7 +125,12 @@ export class TablesService {
       // Kiểm tra số bàn trùng nếu đổi số bàn
       if (dto.number && dto.number !== table.number) {
         const existing = await this.tableRepository.findOne({
-          where: { number: dto.number, isDeleted: false, id: Not(id) },
+          where: {
+            number: dto.number,
+            floorId: dto.floorId,
+            isDeleted: false,
+            id: Not(id),
+          },
         });
 
         if (existing) {

@@ -11,6 +11,13 @@ import { TableStatus } from 'src/common/enums/table-status.enum';
 
 export class CreateTableDto {
   @IsString()
+  @IsNotEmpty({ message: 'ID tầng không được để trống' })
+  floorId!: string;
+
+  @IsString()
+  areaId!: string;
+
+  @IsString()
   @IsNotEmpty({ message: 'Số bàn không được để trống' })
   @MaxLength(50, { message: 'Số bàn không được vượt quá 50 ký tự' })
   number!: string;
