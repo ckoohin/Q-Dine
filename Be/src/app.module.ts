@@ -12,6 +12,7 @@ import { QrTablesModule } from './modules/qr-tables/qr-tables.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { FloorsModule } from './modules/floors/floors.module';
 import { AreasModule } from './modules/areas/areas.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AreasModule } from './modules/areas/areas.module';
     OrdersModule,
     FloorsModule,
     AreasModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
