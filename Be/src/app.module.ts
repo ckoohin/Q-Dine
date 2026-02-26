@@ -10,6 +10,8 @@ import { DishesModule } from './modules/dishes/dishes.module';
 import { TablesModule } from './modules/tables/tables.module';
 import { QrTablesModule } from './modules/qr-tables/qr-tables.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { FloorsModule } from './modules/floors/floors.module';
+import { AreasModule } from './modules/areas/areas.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { OrdersModule } from './modules/orders/orders.module';
     TablesModule,
     QrTablesModule,
     OrdersModule,
+    FloorsModule,
+    AreasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
