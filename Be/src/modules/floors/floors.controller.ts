@@ -6,24 +6,21 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   Query,
 } from '@nestjs/common';
 import { FloorsService } from './floors.service';
 import { CreateFloorDto } from './dto/create-floor.dto';
 import { UpdateFloorDto } from './dto/update-floor.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { UserRole } from 'src/common/enums/user-role.enum';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { AdminOnly } from '../auth/decorators/admin-only.decorator';
 
 @Controller('floors')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@Auth()
 export class FloorsController {
   constructor(private readonly floorsService: FloorsService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   create(@Body() createFloorDto: CreateFloorDto) {
     return this.floorsService.create(createFloorDto);
   }
@@ -39,13 +36,13 @@ export class FloorsController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   update(@Param('id') id: string, @Body() updateFloorDto: UpdateFloorDto) {
     return this.floorsService.update(id, updateFloorDto);
   }
 
   @Delete(':id')
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   remove(@Param('id') id: string) {
     return this.floorsService.remove(id);
   }

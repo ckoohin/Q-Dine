@@ -3,7 +3,8 @@ import { applyDecorators, UseGuards } from '@nestjs/common';
 import { UserRole } from 'src/common/enums/user-role.enum';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
-import { ROLES_KEY } from './roles.decorator';
+
+export const ROLES_KEY = 'roles';
 
 export const Auth = (...roles: UserRole[]) =>
   applyDecorators(
