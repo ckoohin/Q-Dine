@@ -6,25 +6,22 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   Query,
 } from '@nestjs/common';
 import { TablesService } from './tables.service';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
 import { TableStatus } from 'src/common/enums/table-status.enum';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { UserRole } from 'src/common/enums/user-role.enum';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { AdminOnly } from '../auth/decorators/admin-only.decorator';
 
 @Controller('tables')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@Auth()
 export class TablesController {
   constructor(private readonly tablesService: TablesService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   create(@Body() createTableDto: CreateTableDto) {
     return this.tablesService.create(createTableDto);
   }
@@ -44,13 +41,13 @@ export class TablesController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   update(@Param('id') id: string, @Body() updateTableDto: UpdateTableDto) {
     return this.tablesService.update(id, updateTableDto);
   }
 
   @Delete(':id')
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   remove(@Param('id') id: string) {
     return this.tablesService.remove(id);
   }

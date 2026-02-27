@@ -6,14 +6,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Request } from 'express';
-import { ROLES_KEY } from '../decorators/roles.decorator';
 import { UserRole } from 'src/common/enums/user-role.enum';
-import { AuthUser } from '../types/AuthRequest';
-
-interface RequestWithUser extends Request {
-  user?: AuthUser;
-}
+import { RequestWithUser } from '../types/AuthRequest';
+import { ROLES_KEY } from '../decorators/auth.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

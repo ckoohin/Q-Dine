@@ -9,6 +9,7 @@ import {
 import { Transform } from 'class-transformer';
 
 export class RegisterDto {
+  @IsNotEmpty({ message: 'Email không được để trống nhé' })
   @IsEmail({}, { message: 'Email không hợp lệ' })
   @Transform(({ value }: { value: unknown }) =>
     typeof value === 'string' ? value.toLowerCase().trim() : value,

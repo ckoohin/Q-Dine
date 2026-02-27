@@ -7,26 +7,23 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { DishesService } from './dishes.service';
 import { CreateDishDto } from './dto/create-dish.dto';
 import { UpdateDishDto } from './dto/update-dish.dto';
 import { User } from '../users/entities/user.entity';
-import { UserRole } from 'src/common/enums/user-role.enum';
 import { DishStatus } from 'src/common/enums/dish-status.enum';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { AdminOnly } from '../auth/decorators/admin-only.decorator';
 
 @Controller('dishes')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@Auth()
 export class DishesController {
   constructor(private readonly dishesService: DishesService) {}
 
   @Post()
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   create(@Body() createDishDto: CreateDishDto) {
     return this.dishesService.create(createDishDto);
   }
@@ -46,13 +43,13 @@ export class DishesController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   update(@Param('id') id: string, @Body() updateDishDto: UpdateDishDto) {
     return this.dishesService.update(id, updateDishDto);
   }
 
   @Delete(':id')
-  @Roles(UserRole.ADMIN)
+  @AdminOnly()
   remove(@Param('id') id: string) {
     return this.dishesService.remove(id);
   }
