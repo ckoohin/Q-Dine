@@ -35,10 +35,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
     super(options);
   }
 
-  async validate(
-    req: Request,
-    payload: JwtPayload,
-  ): Promise<{ user: User; refreshToken: string }> {
+  async validate(req: Request, payload: JwtPayload): Promise<User> {
     const authHeader = req.headers['authorization'];
     const refreshToken = authHeader?.replace('Bearer ', '').trim();
 
@@ -63,9 +60,6 @@ export class JwtRefreshStrategy extends PassportStrategy(
       throw new UnauthorizedException('Refresh token không hợp lệ');
     }
 
-    return {
-      user,
-      refreshToken,
-    };
+    return user;
   }
 }
