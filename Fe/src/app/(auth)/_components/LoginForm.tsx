@@ -11,36 +11,51 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { CardDescription, CardTitle } from "@/components/ui/card";
-
-type LoginValues = {
-    email: string;
-    password: string;
-    rememberMe: boolean;
-};
+import { useForm } from "react-hook-form";
+import { useLogin } from "@/lib/auth/auth.hooks";
+import { useRouter } from "next/navigation";
+import { LoginValues } from "@/lib/types/auth.type";
+import { log } from "console";
+import { toast, Toaster } from "sonner"
 
 export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [focusedField, setFocusedField] = useState<string | null>(null);
 
-    const [values, setValues] = useState<LoginValues>({
-        email: "",
-        password: "",
-        rememberMe: false,
+    const login = useLogin();
+    const router = useRouter();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<LoginValues>({
+        defaultValues: {
+            email: "",
+            password: "",
+            rememberMe: false,
+        },
     });
 
-    const setField = <K extends keyof LoginValues>(key: K, val: LoginValues[K]) => {
-        setValues((p) => ({ ...p, [key]: val }));
-    };
-
-    const onSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
-
-        await new Promise((r) => setTimeout(r, 1200));
-        console.log("LOGIN submit:", values);
-
-        setIsLoading(false);
+    const onSubmit = async (value: LoginValues) => {
+        console.log(1);
+        
+        try {
+            console.log(`valueLogin: `, value);
+            const data = await login.mutateAsync({
+                email: value.email,
+                password: value.password,
+            });
+            console.log(`data: `, data);
+            
+            router.replace("/admin");
+        } catch (err: any) {
+            console.log("Login failed", err.response.data.message);
+            toast(`${err.response.data.message.message}`, {
+                position: "top-right",
+            })
+        }
     };
 
     const itemV: Variants = {
@@ -68,8 +83,9 @@ export default function LoginForm() {
     };
 
     return (
+        <>
         <motion.form
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="space-y-6"
             variants={formV}
             initial="hidden"
@@ -101,8 +117,7 @@ export default function LoginForm() {
                             <Input
                                 id="login-email"
                                 type="email"
-                                value={values.email}
-                                onChange={(e) => setField("email", e.target.value)}
+                                {...register("email", { required: "Email là bắt buộc" })}
                                 onFocus={() => setFocusedField("email")}
                                 onBlur={() => setFocusedField(null)}
                                 className="pl-12 h-12 bg-white border-2 rounded-xl focus-visible:ring-[#7FA84F]"
@@ -130,8 +145,7 @@ export default function LoginForm() {
                             <Input
                                 id="login-password"
                                 type={showPassword ? "text" : "password"}
-                                value={values.password}
-                                onChange={(e) => setField("password", e.target.value)}
+                                {...register("password", { required: "Mật khẩu là bắt buộc" })}
                                 onFocus={() => setFocusedField("password")}
                                 onBlur={() => setFocusedField(null)}
                                 className="pl-12 pr-12 h-12 bg-white border-2 rounded-xl focus-visible:ring-[#7FA84F]"
@@ -162,8 +176,7 @@ export default function LoginForm() {
                     <div className="flex items-center space-x-2">
                         <Checkbox
                             id="remember"
-                            checked={values.rememberMe}
-                            onCheckedChange={(checked) => setField("rememberMe", checked as boolean)}
+                            {...register("rememberMe")}
                             className="data-[state=checked]:bg-[#7FA84F] data-[state=checked]:border-[#7FA84F]"
                         />
                         <Label htmlFor="remember" className="text-sm cursor-pointer">
@@ -185,10 +198,10 @@ export default function LoginForm() {
             <motion.div variants={itemV}>
                 <Button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={login.isPending}
                     className="w-full h-12 bg-gradient-to-r from-[#7FA84F] to-[#6B9440] hover:from-[#6B9440] hover:to-[#5A8435] text-white rounded-xl font-semibold shadow-lg hover:shadow-2xl transition-all group"
                 >
-                    {isLoading ? (
+                    {login.isPending ? (
                         <>
                             <motion.div
                                 className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full mr-2"
@@ -239,5 +252,6 @@ export default function LoginForm() {
                 </div>
             </motion.div>
         </motion.form>
+        </>
     );
 }

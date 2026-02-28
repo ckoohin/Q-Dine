@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import ParticlesBg from "./ParticlesBg";
 import BrandingPanel from "./BrandingPanel";
 import AuthForm from "./AuthForm";
+import { Toaster } from "sonner"
 
 type AuthMode = "login" | "register";
 
@@ -25,6 +26,8 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
   );
 
   return (
+    <>
+    <Toaster richColors={true} />
     <div className="min-h-screen bg-gradient-to-br from-[#6B9440] via-[#7FA84F] to-[#5A8435] flex items-center justify-center p-4 overflow-hidden relative">
       <ParticlesBg particles={particles} />
 
@@ -37,5 +40,6 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
         </Card>
       </div>
     </div>
+    </>
   );
 }

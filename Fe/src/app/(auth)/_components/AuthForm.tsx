@@ -15,7 +15,7 @@ const panelV: Variants = {
       duration: 1,
       delay: 0.3,
       ease: [0.16, 1, 0.3, 1],
-      when: "beforeChildren", 
+      when: "beforeChildren",
       delayChildren: 0.25,
     },
   },
@@ -56,11 +56,10 @@ export default function AuthForm({
           type="button"
           onClick={() => setIsLogin(true)}
           variant={isLogin ? "default" : "ghost"}
-          className={`relative flex-1 h-12 rounded-xl font-semibold transition-all z-10 ${
-            isLogin
+          className={`relative flex-1 h-12 rounded-xl font-semibold transition-all z-10 ${isLogin
               ? "bg-gradient-to-r from-[#7FA84F] to-[#6B9440] hover:from-[#6B9440] hover:to-[#5A8435] shadow-lg"
               : "hover:bg-transparent"
-          }`}
+            }`}
         >
           Đăng nhập
         </Button>
@@ -69,11 +68,10 @@ export default function AuthForm({
           type="button"
           onClick={() => setIsLogin(false)}
           variant={!isLogin ? "default" : "ghost"}
-          className={`relative flex-1 h-12 rounded-xl font-semibold transition-all z-10 ${
-            !isLogin
+          className={`relative flex-1 h-12 rounded-xl font-semibold transition-all z-10 ${!isLogin
               ? "bg-gradient-to-r from-[#7FA84F] to-[#6B9440] hover:from-[#6B9440] hover:to-[#5A8435] shadow-lg"
               : "hover:bg-transparent"
-          }`}
+            }`}
         >
           Đăng ký
         </Button>
@@ -104,7 +102,33 @@ export default function AuthForm({
             <RegisterForm />
           </motion.div>
         )}
+
       </AnimatePresence>
+      {/* Decorative floating elements */}
+      <motion.div
+        className="absolute top-20 right-20 w-16 h-16 bg-gradient-to-br from-[#7FA84F]/20 to-[#6B9440]/20 rounded-2xl rotate-12"
+        animate={{
+          y: [0, -10, 0],
+          rotate: [12, 22, 12],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute bottom-32 left-16 w-12 h-12 bg-gradient-to-br from-[#8FB961]/20 to-[#A8C686]/20 rounded-full"
+        animate={{
+          y: [0, 15, 0],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
     </motion.div>
   );
 }
