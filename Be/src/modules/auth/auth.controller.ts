@@ -92,6 +92,12 @@ export class AuthController {
   }
 
   @Auth()
+  @Get('me')
+  getMe(@CurrentUser() user: string) {
+    return user;
+  }
+
+  @Auth()
   @Get('profile')
   getProfile(@CurrentUser('id') userId: string) {
     return this.authService.getProfile(userId);
