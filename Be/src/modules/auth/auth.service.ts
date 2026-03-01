@@ -52,7 +52,7 @@ export class AuthService {
     return asyncHandleOperation(async () => {
       const user = await this.userRepository.findOne({
         where: { email: dto.email, isActive: true },
-        select: ['id', 'email', 'password', 'isActive'],
+        select: ['id', 'email', 'role', 'password', 'isActive'],
       });
       if (!user) {
         throw new UnauthorizedException('Email hoặc mật khẩu không đúng');

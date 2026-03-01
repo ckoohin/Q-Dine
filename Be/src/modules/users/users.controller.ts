@@ -10,8 +10,6 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
-import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { AdminOnly } from '../auth/decorators/admin-only.decorator';
 
@@ -30,11 +28,6 @@ export class UsersController {
   @AdminOnly()
   findAll() {
     return this.usersService.findAll();
-  }
-
-  @Get('me')
-  getMe(@CurrentUser() user: User) {
-    return user;
   }
 
   @Get(':id')
