@@ -2,9 +2,12 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(cookieParser());
   app.setGlobalPrefix('api/v1');
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalPipes(

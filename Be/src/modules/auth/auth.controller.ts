@@ -7,6 +7,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Res,
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
@@ -16,7 +17,7 @@ import { ChangePasswordDto, LoginDto, RegisterDto } from './dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { Auth } from './decorators/auth.decorator';
 import { Public } from './decorators/public.decorator';
-
+import type { Response } from 'express';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -31,22 +32,63 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  login(@Body() dto: LoginDto) {
-    return this.authService.login(dto);
+  async login(
+    @Body() dto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const { tokens } = await this.authService.login(dto);
+
+    res.cookie('accessToken', tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    return { message: 'Đăng nhập thành công' };
   }
 
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  refreshTokens(@CurrentUser() user: User) {
-    return this.authService.refreshTokens(user);
+  async refreshTokens(
+    @CurrentUser() user: User,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const tokens = await this.authService.refreshTokens(user);
+
+    res.cookie('accessToken', tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return { message: 'Làm mới token thành công' };
   }
 
   @Auth()
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  logout(@CurrentUser('id') userId: string) {
-    return this.authService.logout(userId);
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    return { message: 'Đăng xuất thành công' };
+    // logout(@CurrentUser('id') userId: string) {
+    //   return this.authService.logout(userId);
   }
 
   @Auth()
