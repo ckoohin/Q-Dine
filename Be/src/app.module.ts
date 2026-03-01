@@ -13,12 +13,15 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { FloorsModule } from './modules/floors/floors.module';
 import { AreasModule } from './modules/areas/areas.module';
 import { CategoriesModule } from './modules/categories/categories.module';
-
+import { StaffsModule } from './modules/staffs/staffs.module';
+import mailConfig from './config/mail.config';
+import { MailModule } from './common/mail/mail.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      load: [mailConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -34,6 +37,8 @@ import { CategoriesModule } from './modules/categories/categories.module';
     FloorsModule,
     AreasModule,
     CategoriesModule,
+    StaffsModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
