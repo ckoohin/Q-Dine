@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy, StrategyOptionsWithRequest } from 'passport-jwt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,19 +25,19 @@ export class JwtRefreshStrategy extends PassportStrategy(
       throw new Error('JWT_REFRESH_SECRET is not defined');
     }
 
-    const options: StrategyOptionsWithRequest = {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: secret,
+    super({
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request: Request) => {
+          return (request.cookies['refreshToken'] as string) ?? null;
+        },
+      ]),
+      secretOrKey: configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
       passReqToCallback: true,
-    };
-
-    super(options);
+    });
   }
 
   async validate(req: Request, payload: JwtPayload): Promise<User> {
-    const authHeader = req.headers['authorization'];
-    const refreshToken = authHeader?.replace('Bearer ', '').trim();
+    const refreshToken = req.cookies['refreshToken'] as string; // ← đọc từ cookie
 
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token không tồn tại');
