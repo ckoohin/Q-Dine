@@ -49,10 +49,10 @@ export default function LoginForm() {
             });
             console.log(`data: `, data);
             
-            router.replace("/admin");
+            router.replace("/");
         } catch (err: any) {
             console.log("Login failed", err.response.data.message);
-            toast(`${err.response.data.message.message}`, {
+            toast.error(`${err.response.data.message.message}`, {
                 position: "top-right",
             })
         }

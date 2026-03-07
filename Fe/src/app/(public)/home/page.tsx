@@ -1,6 +1,5 @@
 import Container from '@/components/Container'
 import React from 'react'
-import "./home.css"
 const Home = () => {
     return (
         <>

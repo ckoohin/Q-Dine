@@ -27,7 +27,7 @@ export default function AuthScreen({ mode }: { mode: AuthMode }) {
 
   return (
     <>
-    <Toaster richColors={true} />
+    <Toaster richColors={true} position="top-right"/>
     <div className="min-h-screen bg-gradient-to-br from-[#6B9440] via-[#7FA84F] to-[#5A8435] flex items-center justify-center p-4 overflow-hidden relative">
       <ParticlesBg particles={particles} />
 

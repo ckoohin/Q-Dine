@@ -1,11 +1,11 @@
 import React from 'react'
 import Dashboard from '@/app/(admin)/admin/dashboard/page'
-const Admin = () => {
+const Staff = () => {
     return (
         <>
-            <Dashboard />
+            <div>Staff</div>
         </>
     )
 }
 
-export default Admin
+export default Staff

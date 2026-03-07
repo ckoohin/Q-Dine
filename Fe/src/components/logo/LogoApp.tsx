@@ -1,11 +1,12 @@
-import LogoApp from "@/components/logo/LogoApp";
-import Link from "next/link";
+import { Link } from 'lucide-react'
+import React from 'react'
 
-export default function Brand() {
+interface TLogoAppProps {
+    href?: string;
+    className?: string;
+}
+const LogoApp = ({ href = "/home", className }: TLogoAppProps) => {
   return (
-    // <>
-    //   <LogoApp />
-    // </>
     <Link href="/home" className="flex items-center gap-2 text-primary">
       <span className="material-symbols-outlined text-3xl font-bold">
         restaurant
@@ -14,5 +15,7 @@ export default function Brand() {
         Savory
       </h2>
     </Link>
-  );
+  )
 }
+
+export default LogoApp

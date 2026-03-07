@@ -4,7 +4,7 @@ import Providers from '@/app/providers';
 import { cn } from '@/libs/utils';
 import { Header } from '@/app/(public)/_components/header/Header';
 import { Footer } from '@/app/(public)/_components/Footer';
-
+import "./public.css"
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {

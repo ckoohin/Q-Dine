@@ -1,4 +1,52 @@
-import { redirect } from "next/navigation";
+'use client';
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth/auth.hooks";
+import { User } from "@/lib/types/auth.type";
+import TopLoadingBar from "@/components/loadings/TopLoadingBar";
+
 export default function Page() {
-  redirect("/home");
+  const router = useRouter();
+
+  const { data: me, isLoading } = useAuth() as {
+    data: User | undefined;
+    isLoading: boolean;
+  };
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!me) {
+      router.replace("/home");
+      return;
+    }
+
+    if (me.role === "ADMIN") {
+      router.replace("/admin");
+      return;
+    }
+
+    if (me.role === "STAFF") {
+      router.replace("/staff");
+      return;
+    }
+    if (me.role === "CUSTOMER") { 
+      router.replace("/home");
+      return;
+    }
+
+    // router.replace("/login");
+
+  }, [me, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <TopLoadingBar />
+      </div>
+    );
+  }
+
+  return null;
 }

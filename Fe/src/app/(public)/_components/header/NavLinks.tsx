@@ -2,7 +2,7 @@ import Link from "next/link";
 import { cn } from "@/libs/utils"; // bạn đang dùng cn rồi
 
 const NAV = [
-  { label: "Trang chủ", to: "/", variant: "primary" as const },
+  { label: "Trang chủ", to: "/home", variant: "primary" as const },
   { label: "Thực đơn", to: "/menu" },
   { label: "Khuyến mãi", to: "/promotions" },
   { label: "Về chúng tôi", to: "/about" },

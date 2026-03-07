@@ -3,11 +3,8 @@
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth/auth.hooks';
+import TopLoadingBar from '@/components/loadings/TopLoadingBar';
 
-/**
- * Protected layout - gates routes behind authentication.
- * "me" query is source of truth; redirects to login when unauthenticated.
- */
 export default function ProtectedLayout({
   children,
 }: {
@@ -29,9 +26,11 @@ export default function ProtectedLayout({
 
   if (isLoading || isError || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
+      <>
+        <div className="flex items-center justify-center h-screen">
+          <TopLoadingBar />
+        </div>
+      </>
     );
   }
 
