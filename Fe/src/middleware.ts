@@ -9,7 +9,10 @@ export function middleware(req: NextRequest) {
   if (!token) {
     const loginUrl = req.nextUrl.clone();
     loginUrl.pathname = "/login";
-    loginUrl.searchParams.set("next", pathname + (searchParams.toString() ? `?${searchParams}` : ""));
+    loginUrl.searchParams.set(
+      "next",
+      pathname + (searchParams.toString() ? `?${searchParams}` : "")
+    );
     return NextResponse.redirect(loginUrl);
   }
 
@@ -17,8 +20,9 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        "/admin/:path*",
-        // "/custome/:path*"
-    ],
+  matcher: [
+    "/admin/:path*",
+    "/staff/:path*",
+    "/customer/:path*"
+  ],
 };

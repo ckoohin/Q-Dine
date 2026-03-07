@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { setOnUnauthenticated } from '@/lib/api/http';
+import { setOnUnauthenticated } from '@/lib/services/http';
 import { queryKeys } from '@/lib/query/keys';
 
 /**

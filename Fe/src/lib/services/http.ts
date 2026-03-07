@@ -1,10 +1,3 @@
-/**
- * Axios HTTP client - Cookie httpOnly authentication.
- * - withCredentials = true (sends cookies with every request)
- * - No localStorage tokens - backend sets httpOnly cookies
- * - 401 interceptor: refresh queue to prevent race conditions
- */
-
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api/v1';

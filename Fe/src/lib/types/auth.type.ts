@@ -3,13 +3,15 @@
  * No localStorage tokens; all auth state derived from "me" query.
  */
 
-export type UserRole = 'admin' | 'staff' | 'customer';
+export type UserRole = 'ADMIN' | 'STAFF' | 'CUSTOMER';
 
 export interface User {
   id: string;
-  username: string;
+  fullName?: string;
   email: string;
   role: UserRole;
+  isActive?: boolean;
+  lastLogin?: string;
   avatar?: string | null;
   createdAt?: string;
   updatedAt?: string;

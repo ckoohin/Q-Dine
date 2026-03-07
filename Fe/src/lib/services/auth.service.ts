@@ -15,6 +15,10 @@ export const authApi = {
     return http.get<User>('/auth/me').then((res) => res.data);
   },
 
+  profile: (): Promise<User> => {
+    return http.get<User>('/auth/profile').then((res) => res.data);
+  },
+
   /**
    * Login - backend sets httpOnly cookies on success.
    */
