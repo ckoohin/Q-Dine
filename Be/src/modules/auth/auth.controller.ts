@@ -18,9 +18,14 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { Auth } from './decorators/auth.decorator';
 import { Public } from './decorators/public.decorator';
 import type { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
+import ms, { StringValue } from 'ms';
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Public()
   @Post('register')
@@ -37,19 +42,25 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const { tokens } = await this.authService.login(dto);
+    const accessExpiresIn = this.configService.getOrThrow<string>(
+      'JWT_ACCESS_EXPIRES_IN',
+    ) as StringValue;
+    const refreshExpiresIn = this.configService.getOrThrow<string>(
+      'JWT_REFRESH_EXPIRES_IN',
+    ) as StringValue;
 
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 15 * 60 * 1000,
+      maxAge: ms(accessExpiresIn),
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: ms(refreshExpiresIn),
     });
     return { message: 'Đăng nhập thành công' };
   }
@@ -62,19 +73,25 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const tokens = await this.authService.refreshTokens(user);
+    const accessExpiresIn = this.configService.getOrThrow<string>(
+      'JWT_ACCESS_EXPIRES_IN',
+    ) as StringValue;
+    const refreshExpiresIn = this.configService.getOrThrow<string>(
+      'JWT_REFRESH_EXPIRES_IN',
+    ) as StringValue;
 
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 15 * 60 * 1000,
+      maxAge: ms(accessExpiresIn),
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: ms(refreshExpiresIn),
     });
 
     return { message: 'Làm mới token thành công' };
