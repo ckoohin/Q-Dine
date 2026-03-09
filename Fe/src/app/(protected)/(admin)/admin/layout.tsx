@@ -23,25 +23,22 @@ export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
-    }) {
-    const user : User | null = await getMeServer();
-    
+}) {
+    const user: User | null = await getMeServer();
+
     console.log("user", user);
 
     if (!user) {
-        redirect("/login");
+        redirect("/login?error=unauthorized");
+    }
 
-        toast.error("Mời Bạn Đăng Nhập");
-    }
-    
     if (!isAdmin(user)) {
-        redirect("/login");
-        toast.error("Bạn Không Có Quyền Truy Cập Vào Trang Này");
+        redirect("/login?error=unauthorized");
     }
-    
+
     return (
         <Providers>
-            <Toaster richColors={true} position="top-right"/>
+            <Toaster richColors={true} position="top-right" />
             <div className={cn("flex h-screen overflow-hidden")}>
                 <Sidebar />
                 <main className="flex-1 flex flex-col overflow-hidden relative">

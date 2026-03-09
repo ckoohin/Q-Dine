@@ -1,5 +1,5 @@
 import React from 'react'
-import Dashboard from '@/app/(admin)/admin/dashboard/page'
+import Dashboard from '@/app/(protected)/(admin)/admin/dashboard/page'
 const Staff = () => {
     return (
         <>

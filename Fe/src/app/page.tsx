@@ -35,9 +35,7 @@ export default function Page() {
       router.replace("/home");
       return;
     }
-
-    // router.replace("/login");
-
+    
   }, [me, isLoading, router]);
 
   if (isLoading) {
