@@ -61,10 +61,11 @@ http.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    // Chỉ skip refresh cho login và refresh endpoint
+    // /auth/logout cần accessToken hợp lệ → cho phép refresh trước khi gọi logout
     const isAuthEndpoint =
       originalRequest.url?.includes('/auth/login') ||
-      originalRequest.url?.includes('/auth/refresh') ||
-      originalRequest.url?.includes('/auth/logout');
+      originalRequest.url?.includes('/auth/refresh');
 
     if (isAuthEndpoint) {
       return Promise.reject(error);
