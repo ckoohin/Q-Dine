@@ -1,4 +1,5 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { authApi } from './auth.service';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api/v1';
 
@@ -11,11 +12,11 @@ const http = axios.create({
   timeout: 15000,
 });
 
-// Refresh lock state - prevents multiple simultaneous refresh calls
+// Prevent multiple refresh calls
 let isRefreshing = false;
 
 type QueuedRequest = {
-  resolve: (value?: unknown) => void;
+  resolve: () => void;
   reject: (reason?: unknown) => void;
 };
 
@@ -23,30 +24,25 @@ let failedQueue: QueuedRequest[] = [];
 
 const processQueue = (error: AxiosError | null) => {
   failedQueue.forEach(({ resolve, reject }) => {
-    if (error) {
-      reject(error);
-    } else {
-      resolve();
-    }
+    if (error) reject(error);
+    else resolve();
   });
+
   failedQueue = [];
 };
 
 let onUnauthenticated: (() => void) | null = null;
 
-/**
- * Register a callback to run when refresh fails (force logout).
- * Called from auth hooks / providers.
- */
-export function setOnUnauthenticated(callback: () => void) {
+export function setOnUnauthenticated(callback: (() => void) | null) {
   onUnauthenticated = callback;
 }
 
 const refreshToken = async (): Promise<boolean> => {
   try {
-    await axios.post(`${baseURL}/auth/refresh`, {}, { withCredentials: true });
+    await authApi.refresh();
     return true;
-  } catch {
+  } catch (error) {
+    console.log(error);
     return false;
   }
 };
@@ -65,7 +61,6 @@ http.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Skip refresh for auth endpoints to avoid loops
     const isAuthEndpoint =
       originalRequest.url?.includes('/auth/login') ||
       originalRequest.url?.includes('/auth/refresh') ||
@@ -75,17 +70,18 @@ http.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Already retried - refresh failed, force logout
     if (originalRequest._retry) {
       onUnauthenticated?.();
       return Promise.reject(error);
     }
 
     if (isRefreshing) {
-      // Queue this request until refresh completes
       return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      }).then(() => http(originalRequest)).catch((err) => Promise.reject(err));
+        failedQueue.push({
+          resolve: () => resolve(http(originalRequest)),
+          reject,
+        });
+      });
     }
 
     originalRequest._retry = true;
@@ -101,7 +97,9 @@ http.interceptors.response.use(
 
     processQueue(error);
     isRefreshing = false;
+
     onUnauthenticated?.();
+
     return Promise.reject(error);
   }
 );

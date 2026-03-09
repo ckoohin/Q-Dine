@@ -45,7 +45,7 @@ export function useLogout() {
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: queryKeys.auth.me() });
       queryClient.clear();
-      router.push('/login');
+      router.push('/login?error=unauthorized');
     },
   });
 }

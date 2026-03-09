@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import type { User } from "@/lib/types/auth.type";
-import http from "../services/http";
+import axios from "axios";
+
+const baseURL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api/v1';
 
 export async function getMeServer(): Promise<User | null> {
   const cookieStore = await cookies();
@@ -11,7 +13,7 @@ export async function getMeServer(): Promise<User | null> {
       .map((c) => `${c.name}=${c.value}`)
       .join("; ");
 
-    const res = await http.get<User>("/auth/me", {
+    const res = await axios.get<User>(`${baseURL}/auth/me`, {
       headers: {
         Cookie: cookieHeader,
       },
