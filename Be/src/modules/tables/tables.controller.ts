@@ -21,12 +21,13 @@ export class TablesController {
   constructor(private readonly tablesService: TablesService) {}
 
   @Post()
-  @AdminOnly()
+  // @AdminOnly()
   create(@Body() createTableDto: CreateTableDto) {
     return this.tablesService.create(createTableDto);
   }
 
   @Get()
+  // @AdminOnly()
   findAll(
     @Query('status') status?: TableStatus,
     @Query('capacity') capacity?: number,
@@ -41,13 +42,13 @@ export class TablesController {
   }
 
   @Patch(':id')
-  @AdminOnly()
+  // @AdminOnly()
   update(@Param('id') id: string, @Body() updateTableDto: UpdateTableDto) {
     return this.tablesService.update(id, updateTableDto);
   }
 
   @Delete(':id')
-  @AdminOnly()
+  // @AdminOnly()
   remove(@Param('id') id: string) {
     return this.tablesService.remove(id);
   }
