@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter, usePathname } from 'next/navigation';
-import { setOnUnauthenticated } from '@/lib/services/http';
-import { queryKeys } from '@/lib/query/keys';
+import { setOnUnauthenticated } from '@/lib/api/http';
+import { queryKeys } from '@/features/auth/queries/auth.query';
 
 /** Các tuyến đường yêu cầu xác thực – chuyển hướng đến /login khi gặp lỗi 401. */
 const PROTECTED_PREFIXES = ['/admin', '/staff', '/customer'];

@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth/auth.hooks";
-import { User } from "@/lib/types/auth.type";
+import { useAuth } from "@/features/auth/hooks/auth.hooks";
+import { User } from "@/features/auth/types/auth.type";
 import TopLoadingBar from "@/components/loadings/TopLoadingBar";
 
 export default function Page() {

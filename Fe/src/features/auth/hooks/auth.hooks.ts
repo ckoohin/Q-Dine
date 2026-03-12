@@ -2,9 +2,9 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { authApi } from '@/lib/services/auth.service';
-import { queryKeys } from '@/lib/query/keys';
-import type { User, UserRole, LoginCredentials } from '@/lib/types/auth.type';
+import { authApi } from '@/features/auth/services/auth.service';
+import { queryKeys } from '@/features/auth/queries/auth.query';
+import type { LoginCredentials } from '@/features/auth/types/auth.type';
 
 export function useAuth() {
   return useQuery({

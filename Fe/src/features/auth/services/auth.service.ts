@@ -3,8 +3,8 @@
  * No token handling - httpOnly cookies sent automatically via withCredentials.
  */
 
-import type { User, LoginCredentials, LoginResponse } from '@/lib/types/auth.type';
-import http from './http';
+import type { User, LoginCredentials, LoginResponse } from '@/features/auth/types/auth.type';
+import http from '@/lib/api/http';
 
 export const authApi = {
   /**

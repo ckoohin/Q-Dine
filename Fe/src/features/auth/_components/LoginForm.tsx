@@ -12,9 +12,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
-import { useLogin } from "@/features/auth/hooks/auth.hooks";
+import { useLogin } from "@/lib/auth/auth.hooks";
 import { useRouter } from "next/navigation";
-import { LoginValues } from "@/features/auth/types/auth.type";
+import { LoginValues } from "@/lib/types/auth.type";
 import { log } from "console";
 import { toast, Toaster } from "sonner"
 

@@ -1,8 +1,3 @@
-/**
- * Auth types - Role and user DTOs for cookie-based httpOnly authentication.
- * No localStorage tokens; all auth state derived from "me" query.
- */
-
 export type UserRole = 'ADMIN' | 'STAFF' | 'CUSTOMER';
 
 export interface User {
