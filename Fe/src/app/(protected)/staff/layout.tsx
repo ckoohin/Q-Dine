@@ -5,12 +5,10 @@ import { cn } from '@/libs/utils';
 import Sidebar from '@/components/layouts/admin/sideber/Sidebar';
 import Footer from '@/components/layouts/admin/Footer';
 import Header from '@/components/layouts/admin/header/Header';
-import { useAuth } from '@/lib/auth/auth.hooks';
-import { User } from '@/lib/types/auth.type';
 import { redirect } from "next/navigation";
-import { toast } from 'sonner';
-import { hasAnyRole, isStaff } from '@/lib/permissions';
-import { getMeServer } from '@/lib/auth/auth.server';
+import { User } from '@/features/auth/types/auth.type';
+import { hasAnyRole } from '@/features/auth/permissions';
+import { getMeServer } from '@/features/auth/auth.server';
 
 const inter = Inter({ subsets: ['latin'] });
 

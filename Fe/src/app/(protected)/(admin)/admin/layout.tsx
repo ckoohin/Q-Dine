@@ -5,12 +5,12 @@ import { cn } from '@/libs/utils';
 import Sidebar from '@/components/layouts/admin/sideber/Sidebar';
 import Footer from '@/components/layouts/admin/Footer';
 import Header from '@/components/layouts/admin/header/Header';
-import { useAuth } from '@/lib/auth/auth.hooks';
-import { User } from '@/lib/types/auth.type';
 import { redirect } from "next/navigation";
-import { getMeServer } from '@/lib/auth/auth.server';
-import { isAdmin } from '@/lib/permissions';
-import { toast, Toaster } from 'sonner';
+import { Toaster } from 'sonner';
+import { User } from '@/features/auth/types/auth.type';
+import { hasAnyRole, isAdmin } from '@/features/auth/permissions';
+import { getMeServer } from '@/features/auth/auth.server';
+import Container from '@/components/Container';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,8 +26,6 @@ export default async function RootLayout({
 }) {
     const user: User | null = await getMeServer();
 
-    console.log("user", user);
-
     if (!user) {
         redirect("/login?error=unauthorized");
     }
@@ -41,10 +39,15 @@ export default async function RootLayout({
             <Toaster richColors={true} position="top-right" />
             <div className={cn("flex h-screen overflow-hidden")}>
                 <Sidebar />
-                <main className="flex-1 flex flex-col overflow-hidden relative">
+                <main className="flex-1 flex flex-col relative ">
                     <Header />
-                    {children}
-                    <Footer />
+                    <Container
+                        className='bg-[#F8FAF8] h-full'
+                        classNameContent='max-w-[1600px] px-8 py-8'
+                    >
+                            {children}
+                    </Container>
+                    {/* <Footer /> */}
                 </main>
             </div>
         </Providers>

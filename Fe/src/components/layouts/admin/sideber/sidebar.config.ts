@@ -6,6 +6,10 @@ import {
   BarChart3,
   ReceiptText,
   Settings,
+  Layers,
+  LayoutGrid,
+  UtensilsCrossed,
+  HandPlatter,
 } from "lucide-react";
 
 type SidebarSection = {
@@ -25,10 +29,17 @@ export const sidebarSections: SidebarSection[] = [
     ],
   },
   {
+    title: "QUẢN LÝ KHÔNG GIAN",
+    items: [
+      { label: "Tầng (Floors)", href: "/admin/floors", icon: Layers  },
+      { label: "Khu vực (Areas)", href: "/admin/areas", icon: LayoutGrid },
+      { label: "Bàn (Tables)", href: "/admin/tables", icon: HandPlatter },
+    ],
+  },
+  {
     title: "Quản lý",
     items: [
       { label: "Thực đơn", href: "/admin/menu", icon: Utensils },
-      { label: "Sơ đồ bàn", href: "/admin/tables", icon: Table },
       { label: "Nhân viên", href: "/admin/staff", icon: Users },
     ],
   },
