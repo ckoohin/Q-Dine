@@ -1,6 +1,6 @@
 import { TableStatus } from "./table-status.type"
 
-export interface Table {
+export type TTable = {
   id: string
   floorId: string
   areaId: string | null
@@ -16,14 +16,13 @@ export interface Table {
 }
 
 // Payload dùng cho tạo mới bàn (khớp CreateTableDto bên BE)
-export type CreateTableInput = {
-  floorId: string
-  areaId: string
+export type TCreateTableInput = {
   number: string
   capacity: number
+  floorId: string
+  areaId: string
   status?: TableStatus
   notes?: string
 }
 
-// Payload update cho phép partial
-export type UpdateTableInput = Partial<CreateTableInput>
+export type UpdateTableInput = Partial<TCreateTableInput>

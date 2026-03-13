@@ -1,9 +1,9 @@
+"use client"
 import QRGenerator from "@/app/(protected)/staff/qr_table/[tableId]/qr-generator";
-// import { useParams } from "next/navigation";
-
+import { useParams } from "next/navigation";
 
 export default function TablesPage() {
-  const tableId = "qweqweqweqwe";
+  const { tableId } = useParams()
   return (
     <div>
       <h1>QR Table</h1>

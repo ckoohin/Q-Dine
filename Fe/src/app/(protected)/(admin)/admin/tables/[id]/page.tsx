@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import ConfirmDialog from "@/components/common/ConfirmDialog"
 import TableForm from "@/features/tables/components/table-form"
 import { useDeleteTable, useTable, useUpdateTable } from "@/features/tables/hooks/useTables"
-import { tableStatusConfig } from "@/features/tables/components/table-data"
+import { tableStatusConfig } from "@/features/tables/config/table-status-config"
 
 export default function TableDetailPage() {
   const router = useRouter()

@@ -1,28 +1,33 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight } from "lucide-react";
-import { getBreadcrumb } from "@/utils/getBreadcrumb";
-const HeaderBreadcrumb = () => {
-  const pathname = usePathname();
-  const breadcrumb = getBreadcrumb(pathname);
+import { ChevronRightIcon, HomeIcon } from "@heroicons/react/24/solid";
 
-  if (!breadcrumb) return null;
+export default function Breadcrumb() {
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <div className="flex items-center gap-2 text-sm">
-      <span className="text-slate-400">
-        {breadcrumb.sectionTitle}
-      </span>
+    <div className="flex items-center text-sm text-gray-500">
+      <Link href="/" className="flex items-center gap-1 hover:text-black">
+        <HomeIcon className="w-4 h-4" />
+        Trang chủ
+      </Link>
 
-      <ChevronRight size={14} className="text-slate-300" />
-      <breadcrumb.icon size={14} className="text-slate" />
+      {segments.map((segment, index) => {
+        const href = "/" + segments.slice(0, index + 1).join("/");
 
-      <span className="font-semibold text-slate-900 dark:text-white">
-        {breadcrumb.pageLabel}
-      </span>
+        return (
+          <div key={index} className="flex items-center">
+            <ChevronRightIcon className="w-4 h-4 mx-2" />
+
+            <Link href={href} className="hover:text-black">
+              {segment}
+            </Link>
+          </div>
+        );
+      })}
     </div>
   );
-};
-
-export default HeaderBreadcrumb;
+}

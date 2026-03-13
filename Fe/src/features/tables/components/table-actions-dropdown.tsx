@@ -15,15 +15,15 @@ import {
   MoreHorizontal,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import type { Table } from "../types/table.type"
+import type { TCreateTableInput, TTable } from "../types/table.type"
 import ConfirmDialog from "@/components/common/ConfirmDialog"
 
 interface Props {
-  table: Table
-  onView?: (table: Table) => void
-  onEdit?: (table: Table) => void
-  onReserve?: (table: Table) => void
-  onDelete?: (table: Table) => void
+  table: TTable
+  onView?: (table: TTable) => void
+  onEdit?: (table: TTable) => void
+  onReserve?: (table: TTable) => void
+  onDelete?: (table: TTable) => void
 }
 
 export default function TableActionsDropdown({
@@ -31,7 +31,7 @@ export default function TableActionsDropdown({
   onView,
   onEdit,
   onReserve,
-  onDelete
+  onDelete,
 }: Props) {
 
     const router = useRouter()

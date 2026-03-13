@@ -6,6 +6,7 @@ import Sidebar from '@/components/layouts/admin/sideber/Sidebar';
 import Footer from '@/components/layouts/admin/Footer';
 import Header from '@/components/layouts/admin/header/Header';
 import Container from '@/components/Container';
+import { QrTableProvider } from '@/features/qr_table/context/qr_table.context';
 
 export default async function RootLayout({
     children,
@@ -14,9 +15,9 @@ export default async function RootLayout({
 }) {
     return (
         <>
-            <Container>
+            <QrTableProvider>
                 {children}
-            </Container>
+            </QrTableProvider>
         </>
     );
 }
