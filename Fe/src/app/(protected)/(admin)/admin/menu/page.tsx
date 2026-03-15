@@ -4,12 +4,12 @@ import { useState } from "react"
 
 import Container from "@/components/Container"
 
-import MenuHeader from "@/features/menu/components/menu-header"
-import MenuFilter from "@/features/menu/components/menu-filters"
-import MenuViewToggle from "@/features/menu/components/menu-view-toggle"
-import MenuGrid from "@/features/menu/components/menu-grid"
-import MenuTable from "@/features/menu/components/menu-table"
-import MenuPagination from "@/features/menu/components/menu-pagination"
+import MenuHeader from "@/features/dishes/components/menu-header"
+import MenuFilter from "@/features/dishes/components/menu-filters"
+import MenuViewToggle from "@/features/dishes/components/menu-view-toggle"
+import MenuGrid from "@/features/dishes/components/menu-grid"
+import MenuTable from "@/features/dishes/components/menu-table"
+import MenuPagination from "@/features/dishes/components/menu-pagination"
 
 export default function MenuPage() {
     const [view, setView] = useState<"grid" | "list">("grid")

@@ -9,13 +9,13 @@ import type { User } from "@/features/auth/types/auth.type";
 import { Button } from "@/components/ui/button";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function Sidebar() {
     const { data: user }: { data: User | undefined } = useAuth();
 
-    const { data: profile }: { data: User | undefined } = useProfile();
-    
+    const { data: profile, isLoading } = useProfile();
+
     const { mutateAsync: logout } = useLogout();
     return (
         <aside className="w-62 pt-8 pb-6 px-3 flex-shrink-0 flex flex-col bg-aside border-r border-slate-200/50">
@@ -43,17 +43,31 @@ export default function Sidebar() {
             <div className=" mt-auto">
                 <div className="bg-white rounded-[20px] p-4 shadow-2xl border border-slate-100">
                     <div className="flex items-center gap-3 mb-4">
-                        <Avatar className="size-12">
-                            <AvatarImage
-                                src={`${process.env.NEXT_PUBLIC_API_URL}${profile?.avatar}`}
-                                alt="@shadcn"
-                            />
-                            <AvatarFallback>{profile?.fullName?.charAt(0).toUpperCase()}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <p className="text-sm font-bold text-slate-800">{profile?.fullName}</p>
-                            <p className="text-[10px] text-savory-green font-bold uppercase tracking-wider">{profile?.role}</p>
-                        </div>
+                        {
+                            isLoading ? (
+                                <div className="flex items-center gap-3 pr-4">
+                                    <Skeleton className="h-12 w-12 rounded-full" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-4 w-[200px]" />
+                                        <Skeleton className="h-4 w-[150px]" />
+                                    </div>
+                                </div>
+                            ) : (
+                                <>
+                                    <Avatar className="size-12">
+                                        <AvatarImage
+                                            src={`${process.env.NEXT_PUBLIC_API_URL}${profile?.avatar}`}
+                                            alt="@shadcn"
+                                        />
+                                        <AvatarFallback>{profile?.fullName?.charAt(0).toUpperCase()}</AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <p className="text-sm font-bold text-slate-800">{profile?.fullName}</p>
+                                        <p className="text-[10px] text-savory-green font-bold uppercase tracking-wider">{profile?.role}</p>
+                                    </div>
+                                </>
+                            )
+                        }
                     </div>
                     <ConfirmDialog
                         title="Bạn chắc chắn muốn đăng xuất?"

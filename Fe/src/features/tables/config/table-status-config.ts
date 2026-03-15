@@ -6,6 +6,7 @@ export const tableStatusConfig: {
     icon: any
     className: string
     iconClass: string
+    classCard: string
     dot: string
   }
 } = {
@@ -13,7 +14,8 @@ export const tableStatusConfig: {
     label: "Trống",
     icon: CheckCircle,
     className: "bg-green-100 text-green-700 border-green-200",
-    iconClass: "bg-green-500",
+    iconClass: "bg-green-100 text-green-700",
+    classCard: "border-green-200 bg-green-50",
     dot: "bg-green-500",
   },
 
@@ -21,7 +23,8 @@ export const tableStatusConfig: {
     label: "Đặt trước",
     icon: Clock,
     className: "bg-yellow-100 text-yellow-700 border-yellow-200",
-    iconClass: "bg-yellow-500",
+    iconClass: "bg-yellow-100 text-yellow-700",
+    classCard: "border-yellow-200 bg-yellow-50",
     dot: "bg-yellow-500",
   },
 
@@ -29,7 +32,8 @@ export const tableStatusConfig: {
     label: "Đang dùng",
     icon: Users,
     className: "bg-red-100 text-red-700 border-red-200",
-    iconClass: "bg-red-500",
+    iconClass: "bg-red-100 text-red-700",
+    classCard: "border-red-200 bg-red-50",
     dot: "bg-red-500",
   },
 
@@ -37,7 +41,8 @@ export const tableStatusConfig: {
     label: "Đang dọn",
     icon: Sparkles,
     className: "bg-blue-100 text-blue-700 border-blue-200",
-    iconClass: "bg-blue-500",
+    iconClass: "bg-blue-100 text-blue-700",
+    classCard: "border-blue-200 bg-blue-50",
     dot: "bg-blue-500",
   },
 }

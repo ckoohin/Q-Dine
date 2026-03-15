@@ -681,6 +681,9 @@ export function AuthScreen() {
           </div>
         </Card>
       </motion.div>
+      <Container >
+
+      </Container>
     </div>
   );
 }

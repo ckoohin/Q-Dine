@@ -12,7 +12,7 @@ import {
 import { useFloors } from "@/features/floors/hooks/useFloors"
 import { useState } from "react"
 import { useTableFilter } from "../context/table-filter.context"
-import ViewSwitcher from "./table-view-switcher"
+import TableViewSwitcher from "./table-view-switcher"
 import { cn } from "@/lib/utils"
 
 export const tableStatusOptions = [
@@ -145,7 +145,7 @@ export default function TableFilter({ className }: TableFilterProps) {
 
       </div>
 
-      <ViewSwitcher/>
+      <TableViewSwitcher/>
 
     </div>
   )

@@ -2,9 +2,9 @@
 
 import { useMemo } from "react"
 import { useTableFilter } from "../context/table-filter.context"
-import type { Table } from "../types/table.type"
+import type { TTable } from "../types/table.type"
 
-export function useFilteredTables(tables?: Table[]) {
+export function useFilteredTables(tables?: TTable[]) {
 
   const { status, floorId, areaId, search } = useTableFilter()
 

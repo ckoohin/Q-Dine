@@ -9,7 +9,7 @@ type Props = {
 
 export default function MenuViewToggle({ view, setView }: Props) {
   return (
-    <div className="flex items-center gap-1 bg-muted p-1 rounded-lg">
+    <div className="flex items-center max-w-20 justify-end gap-1 bg-muted p-1 rounded-lg">
       <button
         onClick={() => setView("list")}
         className={`p-2 rounded-md transition ${

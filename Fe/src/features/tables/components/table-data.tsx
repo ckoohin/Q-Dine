@@ -167,7 +167,6 @@ export default function TableData() {
                               table={item}
                               onEdit={() => {
                                 setEditing(item)
-
                               }}
                               onDelete={async (t) => {
                                 try {

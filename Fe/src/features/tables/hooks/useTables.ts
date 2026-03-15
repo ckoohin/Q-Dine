@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { tableService } from '@/features/tables/services/table.service'
 import { queryKeys } from '@/features/tables/queries/table.query'
 import type { UpdateTableInput } from '@/features/tables/types/table.type'
+import { TableStatus } from '../types/table-status.type'
 
 export function useTables() {
   return useQuery({
@@ -53,6 +54,18 @@ export function useUpdateTable() {
   })
 }
 
+export function useUpdateTableStatus() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: TableStatus }) => tableService.updateTableStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tables.list(),
+      })
+    },
+  })
+}
 export function useDeleteTable() {
   const queryClient = useQueryClient()
 

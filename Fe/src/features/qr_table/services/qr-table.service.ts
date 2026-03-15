@@ -1,9 +1,14 @@
 import http from '@/lib/api/http'
-import { IQrTables } from '../types/qr-table.type'
+import { IQrTables, OpenQrTableResponse, OpenQrTableRequest } from '../types/qr-table.type'
 
 export const qrTableService = {
-  openQrTable: async (id: string | number) => {
-    const res = await http.post<IQrTables[]>(`/qr-tables/${id}/open`)
+  openQrTable: async (id: string, data: OpenQrTableRequest) => {
+    const res = await http.post<OpenQrTableResponse>(`/qr-tables/${id}/open`, data)
+    return res.data
+  },
+
+  checkoutQrTable: async (id: string) => {
+    const res = await http.post<OpenQrTableResponse>(`/qr-tables/${id}/checkout`)
     return res.data
   },
 

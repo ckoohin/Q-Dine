@@ -14,6 +14,7 @@ import ConfirmDialog from "@/components/common/ConfirmDialog"
 import TableForm from "@/features/tables/components/table-form"
 import { useDeleteTable, useTable, useUpdateTable } from "@/features/tables/hooks/useTables"
 import { tableStatusConfig } from "@/features/tables/config/table-status-config"
+import { cn } from "@/lib/utils"
 
 export default function TableDetailPage() {
   const router = useRouter()
@@ -92,7 +93,7 @@ export default function TableDetailPage() {
           <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-neutral-soft dark:border-slate-800 space-y-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="size-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <div className={cn("size-10 rounded-xl flex items-center justify-center text-primary", status?.iconClass)}>
                   <Table2 size={18} />
                 </div>
                 <div className="leading-tight">
@@ -120,10 +121,12 @@ export default function TableDetailPage() {
               <span>{table.capacity} Pax</span>
             </div>
 
-            <Button variant="outline" className="gap-2 w-full" disabled>
-              <QrCode size={16} />
-              In mã QR (coming soon)
-            </Button>
+            <Link href={`/admin/qr_table/${table.id}`}>
+              <Button className="gap-2 w-full">
+                <QrCode size={16} />
+                Khởi tạo QR (coming soon)
+              </Button>
+            </Link>
           </div>
         </div>
 

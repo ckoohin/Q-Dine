@@ -22,25 +22,25 @@ export default function TableStats() {
     {
       icon: Armchair,
       label: "Bàn trống",
-      value: tables?.filter((table) => table.status === TABLE_STATUS.AVAILABLE).length ?? 0,
+      value: filteredTables?.filter((table) => table.status === TABLE_STATUS.AVAILABLE).length ?? 0,
       color: "bg-green-100 text-green-600"
     },
     {
       icon: CookingPot,
       label: "Đang phục vụ",
-      value: tables?.filter((table) => table.status === TABLE_STATUS.OCCUPIED).length ?? 0,
+      value: filteredTables?.filter((table) => table.status === TABLE_STATUS.OCCUPIED).length ?? 0,
       color: "bg-red-100 text-red-600"
     },
     {
       icon: Clock,
       label: "Đặt trước",
-      value: tables?.filter((table) => table.status === TABLE_STATUS.RESERVED).length ?? 0,
+      value: filteredTables?.filter((table) => table.status === TABLE_STATUS.RESERVED).length ?? 0,
       color: "bg-orange-100 text-orange-600"
     },
     {
       icon: Sigma,
       label: "Tổng số bàn",
-      value: tables?.length ?? 0,
+      value: filteredTables?.length ?? 0,
       color: "bg-blue-100 text-blue-600"
     },
   ]

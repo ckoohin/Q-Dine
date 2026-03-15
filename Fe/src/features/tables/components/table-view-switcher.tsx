@@ -3,18 +3,18 @@
 import { LayoutGrid, List } from "lucide-react"
 import { useTableFilter } from "../context/table-filter.context"
 
-export default function ViewSwitcher() {
+export default function TableViewSwitcher() {
   const { view, setView } = useTableFilter()
 
   return (
-    <div className="flex items-center gap-1 rounded-lg border bg-muted/40 p-1">
+    <div className="flex items-center max-w-20 justify-end gap-1 bg-muted p-1 rounded-lg">
 
       <button
         onClick={() => setView("table")}
         className={`flex items-center justify-center rounded-md p-2 transition
           ${view === "table"
-            ? "bg-white shadow-sm text-foreground"
-            : "text-muted-foreground hover:text-foreground"
+            ? "bg-background shadow"
+            : "text-muted-foreground"
           }`}
       >
         <List size={18} />
@@ -24,8 +24,8 @@ export default function ViewSwitcher() {
         onClick={() => setView("card")}
         className={`flex items-center justify-center rounded-md p-2 transition
           ${view === "card"
-            ? "bg-white shadow-sm text-foreground"
-            : "text-muted-foreground hover:text-foreground"
+            ? "bg-background shadow"
+            : "text-muted-foreground"
           }`}
       >
         <LayoutGrid size={18} />
