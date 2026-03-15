@@ -1,25 +1,32 @@
 import { Button } from "@/components/ui/button"
 import QrGenerator from "../qr-generator"
-
+import { useQrTableContext } from "../../context/qr_table.context"
+import { useTable } from "@/features/tables/hooks/useTables"
+import { motion } from "framer-motion"
+import OpeningBadge from "./OpeningTableLoading"
 interface Props {
-  tableId: string
   token?: string
   isLoading?: boolean
 }
 
-export default function QrResultCard({ tableId, token, isLoading }: Props) {
+export default function QrResultCard({ token, isLoading }: Props) {
+
+  const { tableId } = useQrTableContext()
+
+  const { data: table } = useTable(tableId as string)
+
+  const { sessionId, isPending } = useQrTableContext()
 
   return (
 
-    <div className="bg-white p-8 rounded-xl border">
+    <div className="bg-white p-8 rounded-xl border min-w-[350px]">
 
       <div className="bg-white dark:bg-slate-900 p-8 rounded-xl shadow-xl border-4 border-savory-green text-center relative overflow-hidden">
 
-        {/* Status badge */}
-        {token && (
-          <div className="absolute top-0 right-0 p-3 bg-savory-green text-white text-[10px] font-bold uppercase tracking-widest rounded-bl-xl">
-            Đang mở
-          </div>
+        {isPending && (
+
+          <OpeningBadge />
+
         )}
 
         <h4 className="text-lg font-bold mb-1">
@@ -27,30 +34,19 @@ export default function QrResultCard({ tableId, token, isLoading }: Props) {
         </h4>
 
         <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-          Bàn {tableId}
+          Bàn {table?.number}
         </p>
 
         {/* QR area */}
         <div className="bg-slate-50 dark:bg-slate-950 p-6 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 mb-8 aspect-square flex items-center justify-center">
 
-          {/* 1️⃣ Loading */}
-          {isLoading && (
-            <div className="flex flex-col items-center gap-3">
 
-              <div className="size-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-
-              <p className="text-sm text-slate-500">
-                Đang tạo QR...
-              </p>
-
-            </div>
-          )}
 
           {/* 2️⃣ QR created */}
-          {!isLoading && token && (
+          {sessionId && (
             <div className="relative size-full max-w-[200px] flex items-center justify-center bg-white p-2 rounded-lg">
 
-              <QrGenerator tableId={tableId} token={token} />
+              <QrGenerator />
 
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="size-10 bg-white rounded-lg shadow-md flex items-center justify-center p-1">
@@ -66,7 +62,7 @@ export default function QrResultCard({ tableId, token, isLoading }: Props) {
           )}
 
           {/* 3️⃣ Empty state */}
-          {!isLoading && !token && (
+          {!sessionId && (
             <div className="flex flex-col items-center gap-3 text-slate-400">
 
               <span className="material-symbols-outlined text-5xl">
@@ -87,7 +83,7 @@ export default function QrResultCard({ tableId, token, isLoading }: Props) {
         </div>
 
         {/* Actions */}
-        {token && (
+        {sessionId && (
           <div className="flex flex-col gap-3">
 
             <Button className="flex items-center justify-center gap-2 w-full py-5 rounded-xl">

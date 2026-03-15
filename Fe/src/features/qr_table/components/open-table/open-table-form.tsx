@@ -23,8 +23,10 @@ export default function TableSessionForm() {
   const [service, setService] = useState<string>("")
 
   const updateTableStatus = useUpdateTableStatus()
-  const { mutate, isPending } = useOpenQrTable(String(tableId))
+  const { mutate, isPending} = useOpenQrTable(String(tableId))
 
+
+  const { setIsPending, setSessionId } = useQrTableContext()
   const handleOpenTable = () => {
 
     if (!pax) {
@@ -42,9 +44,7 @@ export default function TableSessionForm() {
 
           toast.success("Mở bàn thành công 🎉")
 
-          console.log(data);
-
-          console.log("Session token:", data.sessionToken)
+          setSessionId(data.sessionToken)
 
           updateTableStatus.mutateAsync({
             id: String(tableId),
@@ -64,6 +64,12 @@ export default function TableSessionForm() {
         }
       }
     )
+  }
+
+  if (isPending) {
+    setIsPending(true)
+  } else {
+    setIsPending(false)
   }
 
   return (
