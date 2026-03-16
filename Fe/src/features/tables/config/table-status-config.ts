@@ -15,7 +15,7 @@ export const tableStatusConfig: {
     icon: CheckCircle,
     className: "bg-green-100 text-green-700 border-green-200",
     iconClass: "bg-green-100 text-green-700",
-    classCard: "border-green-200 bg-green-50",
+    classCard: "border-green-500 ",
     dot: "bg-green-500",
   },
 
@@ -24,7 +24,7 @@ export const tableStatusConfig: {
     icon: Clock,
     className: "bg-yellow-100 text-yellow-700 border-yellow-200",
     iconClass: "bg-yellow-100 text-yellow-700",
-    classCard: "border-yellow-200 bg-yellow-50",
+    classCard: "border-yellow-500 ",
     dot: "bg-yellow-500",
   },
 
@@ -33,7 +33,7 @@ export const tableStatusConfig: {
     icon: Users,
     className: "bg-red-100 text-red-700 border-red-200",
     iconClass: "bg-red-100 text-red-700",
-    classCard: "border-red-200 bg-red-50",
+    classCard: "border-red-400 ",
     dot: "bg-red-500",
   },
 
@@ -42,7 +42,7 @@ export const tableStatusConfig: {
     icon: Sparkles,
     className: "bg-blue-100 text-blue-700 border-blue-200",
     iconClass: "bg-blue-100 text-blue-700",
-    classCard: "border-blue-200 bg-blue-50",
+    classCard: "border-blue-400 ",
     dot: "bg-blue-500",
   },
 }

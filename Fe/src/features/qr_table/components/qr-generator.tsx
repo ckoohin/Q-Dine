@@ -7,9 +7,11 @@ import { useQrTableContext } from "../context/qr_table.context"
 
 export default function QrGenerator() {
 
-  const { sessionId, tableId, isPending } = useQrTableContext()
+  const { sessionId, tableId, isPending, setUrlQr } = useQrTableContext()
 
   const url = `${process.env.NEXT_PUBLIC_CLIENT_URL}/order/${sessionId}`
+
+  setUrlQr(url)
 
   return (
     <>

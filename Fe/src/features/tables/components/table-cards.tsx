@@ -44,7 +44,7 @@ export default function TableCards() {
               return (
                 <div
                   key={item.id}
-                  className={`group relative rounded-2xl border p-5 shadow-sm transition hover:shadow-xl hover:-translate-y-1 ${status.classCard}`}
+                  className={`group relative rounded-3xl min-h-[200px] border-t-7 p-5 shadow-xl transition hover:shadow-2xl hover:-translate-y-1 ${status.classCard}`}
                 >
                   {/* header */}
                   <div className="flex items-start justify-between">

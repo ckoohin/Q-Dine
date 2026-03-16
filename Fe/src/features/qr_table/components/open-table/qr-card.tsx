@@ -15,7 +15,7 @@ export default function QrResultCard({ token, isLoading }: Props) {
 
   const { data: table } = useTable(tableId as string)
 
-  const { sessionId, isPending } = useQrTableContext()
+  const { sessionId, isPending, urlQr } = useQrTableContext()
 
   return (
 
@@ -81,6 +81,10 @@ export default function QrResultCard({ token, isLoading }: Props) {
           )}
 
         </div>
+
+        <p className="text-xs text-muted-foreground mb-2">
+          {urlQr}
+        </p>
 
         {/* Actions */}
         {sessionId && (
