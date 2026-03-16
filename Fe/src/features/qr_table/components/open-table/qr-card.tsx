@@ -17,6 +17,7 @@ export default function QrResultCard({ token, isLoading }: Props) {
 
   const { sessionId, isPending, urlQr } = useQrTableContext()
 
+  console.log(isPending)
   return (
 
     <div className="bg-white p-8 rounded-xl border min-w-[350px]">
@@ -44,7 +45,7 @@ export default function QrResultCard({ token, isLoading }: Props) {
 
           {/* 2️⃣ QR created */}
           {sessionId && (
-            <div className="relative size-full max-w-[200px] flex items-center justify-center bg-white p-2 rounded-lg">
+            <div className="relative size-full flex items-center justify-center bg-white p-2 rounded-lg">
 
               <QrGenerator />
 

@@ -1,7 +1,7 @@
 import Container from '@/components/Container'
 import React from 'react'
 
-const Dashboard = () => {
+const DashboardPage = () => {
     return (
         <>
             <div className="flex-1 pb-8 space-y-6">
@@ -278,4 +278,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default DashboardPage

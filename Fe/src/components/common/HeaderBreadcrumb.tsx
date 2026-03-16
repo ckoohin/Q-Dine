@@ -2,32 +2,60 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRightIcon, HomeIcon } from "@heroicons/react/24/solid";
+import { ChevronRight, Home } from "lucide-react";
+import { sidebarSections } from "@/components/layouts/admin/sideber/sidebar.config";
 
-export default function Breadcrumb() {
+export default function HeaderBreadcrumb() {
   const pathname = usePathname();
+
   const segments = pathname.split("/").filter(Boolean);
 
+  const getLabel = (path: string, segment: string) => {
+    for (const section of sidebarSections) {
+      const item = section.items.find((i: any) => i.href === path);
+      if (item) return item.label;
+    }
+
+    // nếu là id
+    if (!isNaN(Number(segment))) {
+      return "Chi tiết";
+    }
+
+    return segment;
+  };
+
   return (
-    <div className="flex items-center text-sm text-gray-500">
-      <Link href="/" className="flex items-center gap-1 hover:text-black">
-        <HomeIcon className="w-4 h-4" />
-        Trang chủ
+    <nav className="flex items-center text-sm text-muted-foreground">
+      <Link
+        href="/admin/dashboard"
+        className="flex items-center gap-1 hover:text-foreground transition"
+      >
+        <Home className="size-4" />
+        <span className="hidden sm:inline">Trang chủ</span>
       </Link>
 
       {segments.map((segment, index) => {
         const href = "/" + segments.slice(0, index + 1).join("/");
+        const label = getLabel(href, segment);
+        const isLast = index === segments.length - 1;
 
         return (
-          <div key={index} className="flex items-center">
-            <ChevronRightIcon className="w-4 h-4 mx-2" />
+          <div key={href} className="flex items-center">
+            <ChevronRight className="mx-2 size-4 opacity-50" />
 
-            <Link href={href} className="hover:text-black">
-              {segment}
-            </Link>
+            {isLast ? (
+              <span className="font-medium text-foreground">{label}</span>
+            ) : (
+              <Link
+                href={href}
+                className="hover:text-foreground transition"
+              >
+                {label}
+              </Link>
+            )}
           </div>
         );
       })}
-    </div>
+    </nav>
   );
 }
