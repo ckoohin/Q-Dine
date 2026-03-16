@@ -8,6 +8,7 @@ type QrTableContextType = {
   tableId?: string
   isLoading?: boolean
   isPending?: boolean
+  urlQr?: string
 
   setIsLoading: (loading: boolean) => void
   setIsPending: (loading: boolean) => void
@@ -16,6 +17,7 @@ type QrTableContextType = {
   openQr: (sessionId: string) => void
   closeQr: () => void
   setTableId: (tableId: string) => void
+  setUrlQr: (urlQr: string) => void
 }
 
 const QrTableContext = createContext<QrTableContextType | null>(null)
@@ -34,6 +36,8 @@ export function QrTableProvider({
   const [isPending, setIsPending] = useState(false)
 
   const [tableId, setTableId] = useState<string>()
+
+  const [urlQr, setUrlQr] = useState<string>()
   const openQr = (sessionId: string) => {
     setIsOpen(true)
     setSessionId(sessionId)
@@ -52,14 +56,15 @@ export function QrTableProvider({
         tableId,
         isLoading,
         isPending,
-
+        urlQr,
         setIsLoading,
         setIsPending,
         setIsOpen,
         setSessionId,
         setTableId,
         openQr,
-        closeQr
+        closeQr,
+        setUrlQr
       }}
     >
       {children}

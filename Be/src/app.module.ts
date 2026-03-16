@@ -16,6 +16,8 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { StaffsModule } from './modules/staffs/staffs.module';
 import mailConfig from './config/mail.config';
 import { MailModule } from './common/mail/mail.module';
+import { SocketModule } from "./modules/socket/socket.module";
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -39,6 +41,7 @@ import { MailModule } from './common/mail/mail.module';
     CategoriesModule,
     StaffsModule,
     MailModule,
+    SocketModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,15 +2,15 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Providers from '@/app/providers';
 import { cn } from '@/libs/utils';
-import Sidebar from '@/components/layouts/admin/sideber/Sidebar';
-import Footer from '@/components/layouts/admin/Footer';
+import SidebarAdmin from '@/components/layouts/admin/sideber/Sidebar';
 import Header from '@/components/layouts/admin/header/Header';
 import { redirect } from "next/navigation";
 import { Toaster } from 'sonner';
 import { User } from '@/features/auth/types/auth.type';
-import { hasAnyRole, isAdmin } from '@/features/auth/permissions';
+import { isAdmin } from '@/features/auth/permissions';
 import { getMeServer } from '@/features/auth/auth.server';
 import Container from '@/components/Container';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -37,19 +37,23 @@ export default async function RootLayout({
     return (
         <Providers>
             <Toaster richColors={true} position="top-right" />
-            <div className={cn("flex h-screen overflow-hidden")}>
-                <Sidebar />
-                <main className="flex-1 flex flex-col relative ">
-                    <Header />
-                    <Container
-                        className='bg-[#F8FAF8] h-full'
-                        classNameContent='max-w-[1600px] px-8 py-8'
-                    >
+            <SidebarProvider>
+
+                <div className={cn("flex h-screen overflow-hidden w-full")}>
+                    <SidebarAdmin />
+                    <main className="flex-1 flex flex-col relative ">
+                        <Header />
+                        <Container
+                            className='bg-[#F8FAF8] h-full'
+                            classNameContent='max-w-[1600px] px-8 py-8'
+                        >
                             {children}
-                    </Container>
-                    {/* <Footer /> */}
-                </main>
-            </div>
+                        </Container>
+                        {/* <Footer /> */}
+                    </main>
+                </div>
+            </SidebarProvider>
+
         </Providers>
     );
 }

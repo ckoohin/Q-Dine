@@ -1,7 +1,6 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useState } from "react"
 
 import TableHeader from "@/features/qr_table/components/open-table/open-table-header"
 import TableSessionForm from "@/features/qr_table/components/open-table/open-table-form"
@@ -13,7 +12,7 @@ export default function TablesPage() {
 
   const { tableId } = useParams()
 
-  const { tableId: tableIdContext, setTableId } = useQrTableContext()
+  const { tableId: tableIdContext, setTableId, sessionId } = useQrTableContext()
 
   setTableId(String(tableId))
 
@@ -22,22 +21,22 @@ export default function TablesPage() {
 
       <TableHeader />
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 ">
 
         {/* Form */}
-        <div className="lg:col-span-3 space-y-6">
-          <TableSessionForm
-          />
-        </div>
+        {/* {
+          !sessionId && ( */}
+            <div className="lg:col-span-3 space-y-6">
+              <TableSessionForm
+              />
+            </div>
+          {/* )
+        }  */}
 
         {/* QR */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className={`lg:col-span-2 space-y-6 ${sessionId ? "w-full" : ""}`}>
 
-          {/* {sessionId && ( */}
-          <QrResultCard
-            tableId={String(tableId)}
-          />
-          {/* )} */}
+          <QrResultCard/>
 
           <RecentActivity />
 

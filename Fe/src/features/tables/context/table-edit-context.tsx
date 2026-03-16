@@ -5,7 +5,7 @@ import { UseMutationResult } from "@tanstack/react-query"
 import type { TTable, UpdateTableInput } from "../types/table.type"
 
 type UpdatePayload = {
-  id: string | number
+  id: string
   data: UpdateTableInput
 }
 

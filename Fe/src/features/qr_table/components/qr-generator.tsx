@@ -7,16 +7,19 @@ import { useQrTableContext } from "../context/qr_table.context"
 
 export default function QrGenerator() {
 
-  const { sessionId, tableId, isPending } = useQrTableContext()
+  const { sessionId, tableId, isPending , setIsPending, setUrlQr } = useQrTableContext()
 
   const url = `${process.env.NEXT_PUBLIC_CLIENT_URL}/order/${sessionId}`
 
+  setUrlQr(url)
+
+  setIsPending(false)
   return (
     <>
       {/* QR Code */}
       {sessionId && (
 
-        <QRCode value={url} size={200} className="w-full h-full" />
+        <QRCode value={url} size={500} className="w-full h-full" />
 
       )}
 
