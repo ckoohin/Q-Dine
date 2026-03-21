@@ -57,7 +57,7 @@ export default function SidebarAdmin() {
     return (
         <Sidebar
             collapsible="offcanvas"
-            className="pt-3 pb-6 px-3 transition-all duration-150 bg-white border-r border-slate-200/50 overflow-x-visible"
+            className="pt-3 pb-6 px-3 transition-all duration-100 bg-white border-r border-slate-200/50 overflow-x-visible"
         >
             <SidebarHeader>
 

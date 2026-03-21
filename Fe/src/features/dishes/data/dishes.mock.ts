@@ -1,6 +1,6 @@
-import { MenuItem } from "../types/menu-pagination"
+import { TMenu } from "../types/dishes-pagination"
 
-export const menuItems: MenuItem[] = [
+export const menuItems: TMenu[] = [
   {
     id: "1",
     name: "Salad Cá Hồi",

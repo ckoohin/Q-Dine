@@ -1,15 +1,20 @@
 "use client"
 
+import { cn } from "@/lib/utils"
 import { LayoutGrid, List } from "lucide-react"
+import { useDishesContext } from "../context/dishes-context"
 
-type Props = {
-  view: "grid" | "list"
-  setView: (view: "grid" | "list") => void
+type DishesViewToggleProps = {
+  className?: string
 }
 
-export default function MenuViewToggle({ view, setView }: Props) {
+export default function DishesViewToggle({ className }: DishesViewToggleProps) {
+  const { view, setView } = useDishesContext()
   return (
-    <div className="flex items-center max-w-20 justify-end gap-1 bg-muted p-1 rounded-lg">
+    <div className={cn(
+      "flex items-center max-w-20 justify-end gap-1 bg-muted p-1 rounded-lg h-full",
+      className
+    )}>
       <button
         onClick={() => setView("list")}
         className={`p-2 rounded-md transition ${

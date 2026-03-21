@@ -49,8 +49,6 @@ export default function TableCreateForm() {
                                 try {
                                     await create.mutateAsync(values)
 
-                                    toast.success("Tạo bàn thành công")
-
                                     setCreating(false)
                                     router.refresh()
                                 } catch (err: any) {

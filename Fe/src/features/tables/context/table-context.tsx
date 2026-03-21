@@ -1,23 +1,17 @@
 "use client"
 
 import { createContext, useContext, useState } from "react"
-
-type Table = {
-  id: string
-  name: string
-  capacity?: number
-  status?: string
-}
+import { TTable } from "../types/table.type"
 
 type TableContextType = {
-  tables: Table[]
-  setTables: (tables: Table[]) => void
+  tables: TTable[]
+  setTables: (tables: TTable[]) => void
 
-  selectedTable: Table | null
-  setSelectedTable: (table: Table | null) => void
+  selectedTable: TTable | null
+  setSelectedTable: (table: TTable | null) => void
 
-  editing: Table | null
-  setEditing: (table: Table | null) => void
+  editing: TTable | null
+  setEditing: (table: TTable | null) => void
 
   creating: boolean
   setCreating: (v: boolean) => void
@@ -32,9 +26,9 @@ export function TableProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [tables, setTables] = useState<Table[]>([])
-  const [selectedTable, setSelectedTable] = useState<Table | null>(null)
-  const [editing, setEditing] = useState<Table | null>(null)
+  const [tables, setTables] = useState<TTable[]>([])
+  const [selectedTable, setSelectedTable] = useState<TTable | null>(null)
+  const [editing, setEditing] = useState<TTable | null>(null)
   const [creating, setCreating] = useState(false)
 
   const refreshTables = () => {

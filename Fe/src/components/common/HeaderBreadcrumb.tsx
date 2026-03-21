@@ -25,7 +25,7 @@ export default function HeaderBreadcrumb() {
   };
 
   return (
-    <nav className="flex items-center text-sm text-muted-foreground">
+    <nav className="flex items-center text-sm text-muted-foreground mb-5">
       <Link
         href="/admin/dashboard"
         className="flex items-center gap-1 hover:text-foreground transition"

@@ -11,6 +11,7 @@ import { isAdmin } from '@/features/auth/permissions';
 import { getMeServer } from '@/features/auth/auth.server';
 import Container from '@/components/Container';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import HeaderBreadcrumb from '@/components/common/HeaderBreadcrumb';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -41,12 +42,13 @@ export default async function RootLayout({
 
                 <div className={cn("flex h-screen overflow-hidden w-full")}>
                     <SidebarAdmin />
-                    <main className="flex-1 flex flex-col relative ">
+                    <main className="flex-1 flex flex-col relative">
                         <Header />
                         <Container
                             className='bg-[#F8FAF8] h-full'
-                            classNameContent='max-w-[1600px] px-8 py-8'
+                            classNameContent='px-8 py-8'
                         >
+                            <HeaderBreadcrumb />
                             {children}
                         </Container>
                         {/* <Footer /> */}

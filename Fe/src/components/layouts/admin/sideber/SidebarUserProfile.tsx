@@ -2,13 +2,10 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { User } from "@/features/auth/types/auth.type";
 
 type Props = {
-  profile?: {
-    fullName?: string;
-    avatar?: string;
-    role?: string;
-  };
+  profile?: User
   isLoading?: boolean;
 };
 

@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/libs/utils";
 import type { ReactNode } from "react";
 
@@ -11,6 +12,7 @@ type ContainerProps = {
     classNameUrlImg?: string;
     classNameContent?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
+import { usePathname } from "next/navigation"
 
 export default function Container({
     children,
@@ -22,6 +24,11 @@ export default function Container({
     overlay = false,
     ...props
 }: ContainerProps) {
+
+    const pathname = usePathname()
+
+    const isTables = pathname.endsWith("/tables")
+
     return (
         <div
             className={cn(
@@ -53,7 +60,8 @@ export default function Container({
             )}
 
             <div className={cn(
-                "flex relative h-full z-10 max-w-[1680px] w-full mx-auto flex-col px-4",
+                "flex relative h-full z-10 w-full mx-auto flex-col px-4",
+                isTables ? "max-w-[2080px]" : "max-w-[1600px]",
                 classNameContent
             )}>
                 {children}

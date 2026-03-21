@@ -15,7 +15,6 @@ export type TTable = {
   updatedAt: string
 }
 
-// Payload dùng cho tạo mới bàn (khớp CreateTableDto bên BE)
 export type TCreateTableInput = {
   number: string
   capacity: number

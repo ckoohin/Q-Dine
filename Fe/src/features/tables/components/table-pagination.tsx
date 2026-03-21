@@ -1,49 +1,74 @@
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+"use client"
 
-export default function TablePagination() {
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+
+type Props = {
+  page: number
+  totalPages: number
+  onPageChange: (page: number) => void
+  className?: string
+}
+
+export default function TablePagination({
+  page,
+  totalPages,
+  onPageChange,
+  className
+}: Props) {
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
+
   return (
-    <div className="px-6 py-4 border-t flex items-center justify-between">
+    <div className={`flex items-center justify-between px-6 py-4 border-t bg-muted/20 ${className}`}>
 
-      {/* Info */}
-      <span className="text-sm text-muted-foreground">
-        Hiển thị 1-5 trên 24 kết quả
+      {/* info */}
+      <span className="text-sm text-muted-foreground flex flex-row gap-2">
+        Trang <span className="font-medium text-foreground">{page}</span> / <span>{totalPages}</span>
       </span>
 
-      {/* Pagination */}
-      <div className="flex items-center gap-2">
+      {/* pagination */}
+      <Pagination>
+        <PaginationContent>
 
-        <Button
-          variant="ghost"
-          size="icon"
-        >
-          <ChevronLeft size={18} />
-        </Button>
+          {/* prev */}
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => page > 1 && onPageChange(page - 1)}
+              className={page === 1 ? "pointer-events-none opacity-40" : "cursor-pointer"}
+            />
+          </PaginationItem>
 
-        <Button
-          size="sm"
-          className="rounded-md"
-        >
-          1
-        </Button>
+          {/* page numbers */}
+          {pages.map((p) => (
+            <PaginationItem key={p}>
+              <PaginationLink
+                isActive={p === page}
+                onClick={() => onPageChange(p)}
+                className="cursor-pointer"
+              >
+                {p}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
 
-        <Button
-          variant="ghost"
-          size="sm"
-          className="rounded-md"
-        >
-          2
-        </Button>
+          {/* next */}
+          <PaginationItem>
+            <PaginationNext
+              onClick={() =>
+                page < totalPages && onPageChange(page + 1)
+              }
+              className={page === totalPages ? "pointer-events-none opacity-40" : "cursor-pointer"}
+            />
+          </PaginationItem>
 
-        <Button
-          variant="ghost"
-          size="icon"
-        >
-          <ChevronRight size={18} />
-        </Button>
-
-      </div>
-
+        </PaginationContent>
+      </Pagination>
     </div>
   )
 }

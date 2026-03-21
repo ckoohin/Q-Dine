@@ -7,7 +7,7 @@ export default function TablesPage() {
   return (
     <div>
       <h1>QR Table</h1>
-      <QRGenerator tableId={tableId as string} />
+      <QRGenerator />
     </div>
   );
 }

@@ -1,62 +1,31 @@
-"use client"
-
-import { useMemo, useState } from "react"
 import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
   TableHeader,
   TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
 } from "@/components/ui/table"
-import {
-  Users,
-  Table2,
-  CheckCircle,
-  Clock,
-  Sparkles
-} from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
+
 import { Badge } from "@/components/ui/badge"
-import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { Pencil, Table2, Trash, Users } from "lucide-react"
 
-import TablePagination from "./table-pagination"
+import { menuItems } from "../data/dishes.mock"
+import { Checkbox } from "@radix-ui/react-checkbox"
 import TableSkeleton from "@/components/loadings/TableLoading"
-import { useDeleteTable, useTables, useUpdateTable } from "../hooks/useTables"
-import TableActionsDropdown from "./table-actions-dropdown"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import TableForm from "./table-form"
-import type { TTable } from "../types/table.type"
-import { useTableFilter } from "../context/table-filter.context"
-import { useFilteredTables } from "../hooks/useFilteredTables"
-import { tableStatusConfig } from "../config/table-status-config"
-import TableEdit from "./table-edit"
-import TableCreateForm from "./table-create-form"
-import { useTableEdit } from "../context/table-edit-context"
+import TableActionsDropdown from "@/features/tables/components/table-actions-dropdown"
+import TablePagination from "@/features/tables/components/table-pagination"
+import { useDishes } from "../hooks/useDishes"
 
-export default function TableData() {
-  const { data: tables, isLoading } = useTables()
-  const update = useUpdateTable()
-  const del = useDeleteTable()
-
-  const { editing, setEditing } = useTableEdit()
-
-  const filteredTables = useFilteredTables(tables)
-
-  const [page, setPage] = useState(1)
-  const pageSize = 10
-
-  const paginatedTables = useMemo(() => {
-    const start = (page - 1) * pageSize
-    const end = start + pageSize
-    return filteredTables.slice(start, end)
-  }, [filteredTables, page])
-
-  const totalPages = Math.ceil(filteredTables.length / pageSize)
-
+export default function DishesTable() {
+  const { data: dishes, isLoading } = useDishes()
+  
+  if (!isLoading) {
+    console.log(dishes)
+  }
   return (
-    <>
-      <div className="rounded-3xl border bg-white overflow-hidden">
+     <div className="rounded-3xl border bg-white overflow-hidden">
 
         <div className="overflow-x-auto">
           <Table>
@@ -69,10 +38,10 @@ export default function TableData() {
                   <Checkbox className="mx-auto block" />
                 </TableHead>
 
-                <TableHead>Mã bàn</TableHead>
-                <TableHead>Tên bàn</TableHead>
-                <TableHead>Vị trí</TableHead>
-                <TableHead>Sức chứa</TableHead>
+                <TableHead>Mã món</TableHead>
+                <TableHead>Tên món</TableHead>
+                <TableHead>Giá</TableHead>
+                <TableHead>Danh mục</TableHead>
                 <TableHead>Trạng thái</TableHead>
 
                 <TableHead className="text-right pr-5">
@@ -88,18 +57,15 @@ export default function TableData() {
             ) : (
               <TableBody>
 
-                {filteredTables.length === 0 ? (
+                {dishes?.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center py-10 text-muted-foreground">
-                      Không có bàn nào phù hợp với bộ lọc
+                      Không có món nào phù hợp với bộ lọc
                     </TableCell>
                   </TableRow>
                 ) :
                   (
-                    paginatedTables?.map((item) => {
-
-                      const statust = tableStatusConfig[item.status]
-                      const StatusIcon = statust.icon
+                    dishes?.map((item) => {
 
                       return (
                         <TableRow
@@ -112,44 +78,38 @@ export default function TableData() {
                             <Checkbox className="mx-auto block" />
                           </TableCell>
 
-                          {/* Code */}
                           <TableCell className="font-mono text-muted-foreground text-sm">
-                            {item.number}
+                            {item.id}
                           </TableCell>
 
-                          {/* Name */}
                           <TableCell>
                             <div className="flex items-center gap-3">
 
-                              <div className={`size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary ${statust.className}`}>
+                              <div className={`size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary`}>
                                 <Table2 size={16} />
                               </div>
 
                               <span className="font-medium">
-                                Bàn VIP {item.number}
+                                {item.name}
                               </span>
 
                             </div>
                           </TableCell>
 
-                          {/* Location */}
-                          <TableCell>
-                            <div className="flex flex-col leading-tight">
-                              <span className="text-sm font-medium">
-                                Tầng {item.floorId}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                Khu VIP
-                              </span>
-                            </div>
-                          </TableCell>
-
-                          {/* Capacity */}
                           <TableCell>
                             <div className="flex items-center gap-1.5 text-muted-foreground">
                               <Users size={14} />
                               <span className="text-sm">
-                                {item.capacity} Pax
+                                {item.price} VNĐ
+                              </span>
+                            </div>
+                          </TableCell>
+                          
+                          <TableCell>
+                            <div className="flex items-center gap-1.5 text-muted-foreground">
+                              {/* <Users size={14} /> */}
+                              <span className="text-sm">
+                                {item.categoryId ? "danh mục" : "Không có danh mục"}
                               </span>
                             </div>
                           </TableCell>
@@ -159,13 +119,11 @@ export default function TableData() {
 
                             <Badge
                               variant="outline"
-                              className={`flex items-center rounded-full p-1 px-2 gap-1.5 w-fit ${statust.className}`}
+                              className={`flex items-center rounded-full p-1 px-2 gap-1.5 w-fit`}
                             >
-                              <span className={`size-1.5 rounded-full ${statust.dot}`} />
-
-                              <StatusIcon size={14} />
-
-                              {statust.label}
+                              <span className={`size-1.5 rounded-full ${item.status}`} />
+                        
+                              {item.status}
 
                             </Badge>
 
@@ -174,7 +132,7 @@ export default function TableData() {
                           {/* Actions */}
                           <TableCell className="text-right pr-5">
 
-                            <TableActionsDropdown
+                            {/* <TableActionsDropdown
                               table={item}
                               onEdit={() => {
                                 setEditing(item)
@@ -187,7 +145,7 @@ export default function TableData() {
                                   toast.error(err?.response?.data?.message?.message ?? "Xóa bàn thất bại")
                                 }
                               }}
-                            />
+                            /> */}
 
                           </TableCell>
 
@@ -203,13 +161,12 @@ export default function TableData() {
           </Table>
         </div>
 
-        <TablePagination
+        {/* <TablePagination
           page={page}
           totalPages={totalPages}
           onPageChange={setPage}
-        />
+        /> */}
 
       </div>
-    </>
   )
 }

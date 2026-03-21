@@ -25,7 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-import type { CreateTableInput, Table } from "@/features/tables/types/table.type"
+import type { TCreateTableInput, TTable } from "@/features/tables/types/table.type"
 import type { TableStatus } from "@/features/tables/types/table-status.type"
 import { useFloors } from "@/features/floors/hooks/useFloors"
 import { useAreas } from "@/features/areas/hooks/useAreas"
@@ -42,10 +42,10 @@ const schema = z.object({
 export type TableFormValues = z.infer<typeof schema>
 
 type Props = {
-  defaultValues?: Partial<TableFormValues> | Table
+  defaultValues?: Partial<TableFormValues> | TTable
   submitText?: string
   isSubmitting?: boolean
-  onSubmit: (values: CreateTableInput) => void | Promise<void>
+  onSubmit: (values: TCreateTableInput) => void | Promise<void>
   onCancel?: () => void
 }
 

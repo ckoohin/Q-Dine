@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
+import { useDishesContext } from "../context/dishes-context"
 
-export default function MenuHeader() {
+export default function DishesHeader() {
+  const { creating, setCreating } = useDishesContext()
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
       <div>
@@ -12,12 +14,19 @@ export default function MenuHeader() {
         </p>
       </div>
 
-      <Link href="/admin/menu/create">
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Thêm món
-        </Button>
-      </Link>
+
+      {/* <Link href="/admin/menu/create"> */}
+      <Button
+        onClick={() => {
+          setCreating(true)
+          console.log("23");
+
+        }}
+      >
+        <Plus size={18} />
+        Thêm món
+      </Button>
+      {/* </Link> */}
     </div>
   )
 }

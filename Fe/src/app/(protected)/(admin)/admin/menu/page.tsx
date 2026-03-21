@@ -1,38 +1,55 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useMemo, useState } from "react";
 
-import Container from "@/components/Container"
+import Container from "@/components/Container";
 
-import MenuHeader from "@/features/dishes/components/menu-header"
-import MenuFilter from "@/features/dishes/components/menu-filters"
-import MenuViewToggle from "@/features/dishes/components/menu-view-toggle"
-import MenuGrid from "@/features/dishes/components/menu-grid"
-import MenuTable from "@/features/dishes/components/menu-table"
-import MenuPagination from "@/features/dishes/components/menu-pagination"
+import DishesHeader from "@/features/dishes/components/dishes-header";
+import DishesFilter from "@/features/dishes/components/dishes-filters";
+import DishesViewToggle from "@/features/dishes/components/dishes-view-toggle";
+import DishesGrid from "@/features/dishes/components/dishes-grid";
+import DishesTable from "@/features/dishes/components/dishes-table";
+import DishesPagination from "@/features/dishes/components/dishes-pagination";
+import { MenuProvider, useDishesContext } from "@/features/dishes/context/dishes-context";
+import { useDishes } from "@/features/dishes/hooks/useDishes";
+import DishesCreate from "@/features/dishes/components/dishes-create";
 
 export default function MenuPage() {
-    const [view, setView] = useState<"grid" | "list">("grid")
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
+    const { view, setView } = useDishesContext();
 
+      const { data: dishes } = useDishes()
+      const pageSize = 15
+      const paginatedDishes = useMemo(() => {
+        const start = (page - 1) * pageSize
+        const end = start + pageSize
+        return dishes?.slice(start, end)
+      }, [dishes, page])
+    
+    const totalPages = Math.ceil(dishes ? dishes.length : 1 / pageSize)
+    
+    const { creating } = useDishesContext()
     return (
         <>
             <div className="space-y-6">
-
-                <MenuHeader />
+                <DishesHeader />
 
                 <div className="flex items-center justify-between">
-                    <MenuFilter />
-                    <MenuViewToggle view={view} setView={setView} />
+                    <DishesFilter />
                 </div>
 
-                {view === "grid" ? <MenuGrid /> : <MenuTable />}
-                <MenuPagination
-                    page={page}
-                    totalPages={8}
-                    onPageChange={setPage}
-                />
+                {view === "grid" ?
+                    <DishesGrid />
+                    : <DishesTable />}
+                <div className="sticky bottom-0 left-0 right-0">
+                    <DishesPagination
+                        page={page} totalPages={totalPages} onPageChange={setPage} />
+                </div>
+
+                {/* from create */}
+                <DishesCreate />
+
             </div>
         </>
-    )
+    );
 }

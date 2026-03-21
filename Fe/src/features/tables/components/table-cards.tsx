@@ -13,6 +13,9 @@ import { tableStatusConfig } from "../config/table-status-config"
 import { useTableEdit } from "../context/table-edit-context"
 import { TableCardSkeleton } from "@/components/loadings/loading-table-card"
 import { cn } from "@/lib/utils"
+import { useMemo, useState } from "react"
+import TablePagination from "./table-pagination"
+import { motion } from "framer-motion"
 
 export default function TableCards() {
 
@@ -24,17 +27,32 @@ export default function TableCards() {
 
   const { editing, setEditing } = useTableEdit()
 
+  const [page, setPage] = useState(1)
+    const pageSize = 15
+  
+    const paginatedTables = useMemo(() => {
+      const start = (page - 1) * pageSize
+      const end = start + pageSize
+      return filteredTables.slice(start, end)
+    }, [filteredTables, page])
+  
+    const totalPages = Math.ceil(filteredTables.length / pageSize)
+
   return (
     <>
       {
         isLoading ? (
 
-          <TableCardSkeleton />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <TableCardSkeleton key={index} />
+            ))}
+          </div>
         ) : (
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6">
 
-            {filteredTables.map((item) => {
+            {paginatedTables.map((item) => {
 
               const status = tableStatusConfig[item.status]
               const StatusIcon = status.icon
@@ -42,9 +60,19 @@ export default function TableCards() {
               const isAvailable = item.status === "AVAILABLE"
 
               return (
-                <div
+                <motion.div
                   key={item.id}
-                  className={`group relative rounded-3xl min-h-[200px] border-t-7 p-5 shadow-xl transition hover:shadow-2xl hover:-translate-y-1 ${status.classCard}`}
+                  initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{
+                    duration: 0.1,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{
+                    y: -6,
+                    scale: 1.01
+                  }}
+                  className={`group hover:shadow-2xl relative rounded-3xl min-h-[200px] border-t-7 p-5 shadow-xl transition ${status.classCard}`}
                 >
                   {/* header */}
                   <div className="flex items-start justify-between">
@@ -126,7 +154,7 @@ export default function TableCards() {
 
                   {/* action */}
                   {isAvailable && (
-                    <Link href={`qr_table/${item.id}`}>
+                    <Link href={`/admin/tables/qr_table/${item.id}`}>
                       <Button
                         className="w-full mt-4 rounded-xl"
                       >
@@ -135,12 +163,19 @@ export default function TableCards() {
                       </Button>
                     </Link >
                   )}
-                </div>
+                </motion.div>
               )
             })}
+              
           </div>
         )
       }
+      <TablePagination
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        className="mt-auto sticky border-b-0 bottom-0 w-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10"
+      />
     </>
   )
 }

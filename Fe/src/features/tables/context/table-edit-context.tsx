@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from "react"
 import { UseMutationResult } from "@tanstack/react-query"
-import type { TTable, UpdateTableInput } from "../types/table.type"
+import type { TCreateTableInput, TTable, UpdateTableInput } from "../types/table.type"
 
 type UpdatePayload = {
   id: string
@@ -12,7 +12,7 @@ type UpdatePayload = {
 type TableEditContextType = {
   editing: TTable | null
   setEditing: (table: TTable | null) => void
-  update: UseMutationResult<any, Error, UpdatePayload>
+  update: UseMutationResult<any, Error, { id: string; data: UpdateTableInput }>
 }
 
 const TableEditContext = createContext<TableEditContextType | null>(null)
@@ -22,7 +22,7 @@ export function TableEditProvider({
   update,
 }: {
   children: React.ReactNode
-  update: UseMutationResult<any, Error, UpdatePayload>
+  update: UseMutationResult<any, Error, { id: string; data: UpdateTableInput }>
 }) {
   const [editing, setEditing] = useState<TTable | null>(null)
 

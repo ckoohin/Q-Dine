@@ -56,10 +56,7 @@ export default function TableEdit() {
                       toast.success("Cập nhật bàn thành công")
                       setEditing(null)
                     } catch (err: any) {
-                      toast.error(
-                        err?.response?.data?.message?.message ??
-                          "Cập nhật bàn thất bại"
-                      )
+                      console.log(err.response.data.message.message);
                     }
                   }}
                 />

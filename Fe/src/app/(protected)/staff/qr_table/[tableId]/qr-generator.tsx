@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
 interface IQRGeneratorProps {
-  tableId: string;
+  tableId?: string;
 }
 export default function QRGenerator({ tableId }: IQRGeneratorProps) {
   const [link, setLink] = useState("");
@@ -23,7 +23,7 @@ export default function QRGenerator({ tableId }: IQRGeneratorProps) {
       /> */}
 
       {link &&
-        <QRCodeSVG value={link} size={200} />
+        <QRCodeSVG value={"https://github.com/ckoohin/Q-Dine"} size={200} />
       }
     </div>
   );

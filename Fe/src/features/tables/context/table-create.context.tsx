@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from "react"
 import { UseMutationResult } from "@tanstack/react-query"
-import { TCreateTableInput, TTable } from "../types/table.type"
+import { TCreateTableInput, TTable, UpdateTableInput } from "../types/table.type"
 
 type TableCreateContextType = {
   creating: boolean
@@ -17,7 +17,7 @@ export function TableCreateProvider({
   create,
 }: {
   children: React.ReactNode
-  create: UseMutationResult<any, Error, TCreateTableInput>
+  create: UseMutationResult<any, Error, TCreateTableInput >
 }) {
   const [creating, setCreating] = useState(false)
 
